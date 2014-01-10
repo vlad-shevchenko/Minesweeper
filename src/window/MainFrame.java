@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -17,6 +19,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
 import main.Const;
@@ -28,60 +31,28 @@ import main.Const;
  */
 public class MainFrame extends JFrame {
 
-	private JLabel lblTime;
-	private JLabel lblBombs;
+	private final JLabel lblTime = new JLabel();
+	private final JLabel lblBombs = new JLabel();
 	private JButton btnNewGame;
 	
 	private JPanel field;
 	
+	private Timer timer;
+	private int secondsOfGame;
+	
 	private JMenuBar menuBar;
 	
 	public MainFrame() {
-		field = new Field();
-		field.setBorder(new LineBorder(new Color(0, 0, 0)));
-		getContentPane().add(field, BorderLayout.CENTER);
-
-		JPanel pnlHeader = new JPanel();
-		pnlHeader.setBorder(new LineBorder(new Color(0, 0, 0)));
-		getContentPane().add(pnlHeader, BorderLayout.NORTH);
-		pnlHeader.setLayout(new BoxLayout(pnlHeader, BoxLayout.X_AXIS));
-
-		Component horizontalStrut = Box.createHorizontalStrut(10);
-		pnlHeader.add(horizontalStrut);
-
-		lblTime = new JLabel("000");
-		lblTime.setOpaque(true);
-		lblTime.setBackground(new Color(0, 0, 139));
-		lblTime.setForeground(new Color(165, 42, 42));
-		lblTime.setFont(new Font("Asrock7Segment", Font.BOLD, 16));
-		pnlHeader.add(lblTime);
-
-		Component horizontalGlue = Box.createHorizontalGlue();
-		pnlHeader.add(horizontalGlue);
-
-		btnNewGame = new JButton("");
-		btnNewGame.setPreferredSize(new Dimension(32, 32));
-		btnNewGame.setOpaque(false);
-		btnNewGame.setBackground(SystemColor.controlHighlight);
-		btnNewGame.setForeground(SystemColor.controlHighlight);
-		btnNewGame.setMaximumSize(new Dimension(32, 32));
-		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon));
-		pnlHeader.add(btnNewGame);
-
-		Component horizontalGlue_1 = Box.createHorizontalGlue();
-		pnlHeader.add(horizontalGlue_1);
-
-		lblBombs = new JLabel(numberConvert(Const.DefaultBombsCount));
-		lblBombs.setOpaque(true);
-		lblBombs.setBackground(new Color(0, 0, 139));
-		lblBombs.setForeground(new Color(165, 42, 42));
-		lblBombs.setFont(new Font("Asrock7Segment", Font.BOLD, 16));
-		pnlHeader.add(lblBombs);
-
-		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
-		pnlHeader.add(horizontalStrut_1);
-
+		initFrameContent();
 		initMenuBar();
+		
+		timer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ev) {
+				lblTime.setText(numberConvert(secondsOfGame++));
+			}
+		});
+		timer.start();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(100, 100);
@@ -106,6 +77,52 @@ public class MainFrame extends JFrame {
 		}
 		
 		return result.toString();
+	}
+	
+	private void initFrameContent() {
+		field = new Field();
+		field.setBorder(new LineBorder(new Color(0, 0, 0)));
+		getContentPane().add(field, BorderLayout.CENTER);
+
+		JPanel pnlHeader = new JPanel();
+		pnlHeader.setBorder(new LineBorder(new Color(0, 0, 0)));
+		getContentPane().add(pnlHeader, BorderLayout.NORTH);
+		pnlHeader.setLayout(new BoxLayout(pnlHeader, BoxLayout.X_AXIS));
+
+		Component horizontalStrut = Box.createHorizontalStrut(10);
+		pnlHeader.add(horizontalStrut);
+
+		lblTime.setText(numberConvert(0));
+		lblTime.setOpaque(true);
+		lblTime.setBackground(new Color(0, 0, 139));
+		lblTime.setForeground(new Color(165, 42, 42));
+		lblTime.setFont(new Font("Asrock7Segment", Font.BOLD, 16));
+		pnlHeader.add(lblTime);
+
+		Component horizontalGlue = Box.createHorizontalGlue();
+		pnlHeader.add(horizontalGlue);
+
+		btnNewGame = new JButton("");
+		btnNewGame.setPreferredSize(new Dimension(32, 32));
+		btnNewGame.setOpaque(false);
+		btnNewGame.setBackground(SystemColor.controlHighlight);
+		btnNewGame.setForeground(SystemColor.controlHighlight);
+		btnNewGame.setMaximumSize(new Dimension(32, 32));
+		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon));
+		pnlHeader.add(btnNewGame);
+
+		Component horizontalGlue_1 = Box.createHorizontalGlue();
+		pnlHeader.add(horizontalGlue_1);
+
+		lblBombs.setText(numberConvert(Const.DefaultBombsCount));
+		lblBombs.setOpaque(true);
+		lblBombs.setBackground(new Color(0, 0, 139));
+		lblBombs.setForeground(new Color(165, 42, 42));
+		lblBombs.setFont(new Font("Asrock7Segment", Font.BOLD, 16));
+		pnlHeader.add(lblBombs);
+
+		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
+		pnlHeader.add(horizontalStrut_1);
 	}
 
 	private void initMenuBar() {
