@@ -1,4 +1,4 @@
-package window.cell;
+package window.main.cell;
 
 public enum CellState {
 

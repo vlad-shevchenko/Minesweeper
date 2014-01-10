@@ -1,6 +1,6 @@
 package main;
 
-import window.MainFrame;
+import window.main.MainFrame;
 
 /**
  * Start point of the program. Just initiates MainFrame object.

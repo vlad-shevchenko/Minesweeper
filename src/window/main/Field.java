@@ -1,4 +1,4 @@
-package window;
+package window.main;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -14,8 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import main.Const;
-import window.cell.Cell;
-import window.cell.CellState;
+import window.main.cell.Cell;
+import window.main.cell.CellState;
 import events.BombsCountListener;
 import events.GameListener;
 
