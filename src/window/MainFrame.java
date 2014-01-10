@@ -1,39 +1,28 @@
 package window;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import java.awt.BorderLayout;
-import java.awt.Image;
-
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-
+import java.awt.Color;
 import java.awt.Component;
-import java.util.ResourceBundle;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 import javax.swing.Box;
-import javax.swing.JButton;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-
-import java.awt.Button;
-import java.awt.Dimension;
-import java.awt.Canvas;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.SystemColor;
-import java.awt.Font;
-import java.awt.Color;
-
-import javax.swing.border.LineBorder;
-import javax.swing.JMenuBar;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import main.Const;
 
 /**
- * // * Main window of program. Contains field
+ * Main window of program. Contains field [...]
  * 
  * @author Влад
  */
@@ -47,16 +36,8 @@ public class MainFrame extends JFrame {
 	
 	private JMenuBar menuBar;
 	
-	private final String POSITIVE_SMILE_PATH = "D:\\Projects\\Java\\all\\Minesweeper\\res\\pos.png";
-	private final String NEGATIVE_SMILE_PATH = "D:\\Projects\\Java\\all\\Minesweeper\\res\\neg.png";
-	private final Image POSITIVE_SMILE = new ImageIcon(POSITIVE_SMILE_PATH)
-			.getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
-	private final Image NEGATIVE_SMILE = new ImageIcon(NEGATIVE_SMILE_PATH)
-	.getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
-
 	public MainFrame() {
 		field = new Field();
-		field.setLayout(new GridLayout(5, 5));
 		field.setBorder(new LineBorder(new Color(0, 0, 0)));
 		getContentPane().add(field, BorderLayout.CENTER);
 
@@ -68,7 +49,7 @@ public class MainFrame extends JFrame {
 		Component horizontalStrut = Box.createHorizontalStrut(10);
 		pnlHeader.add(horizontalStrut);
 
-		lblTime = new JLabel("012");
+		lblTime = new JLabel("000");
 		lblTime.setOpaque(true);
 		lblTime.setBackground(new Color(0, 0, 139));
 		lblTime.setForeground(new Color(165, 42, 42));
@@ -84,13 +65,13 @@ public class MainFrame extends JFrame {
 		btnNewGame.setBackground(SystemColor.controlHighlight);
 		btnNewGame.setForeground(SystemColor.controlHighlight);
 		btnNewGame.setMaximumSize(new Dimension(32, 32));
-		btnNewGame.setIcon(new ImageIcon(POSITIVE_SMILE));
+		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon));
 		pnlHeader.add(btnNewGame);
 
 		Component horizontalGlue_1 = Box.createHorizontalGlue();
 		pnlHeader.add(horizontalGlue_1);
 
-		lblBombs = new JLabel("234");
+		lblBombs = new JLabel(numberConvert(Const.DefaultBombsCount));
 		lblBombs.setOpaque(true);
 		lblBombs.setBackground(new Color(0, 0, 139));
 		lblBombs.setForeground(new Color(165, 42, 42));
@@ -105,9 +86,26 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(100, 100);
 		setResizable(false);
-		setResizable(false);
 		pack();
 		setVisible(true);
+	}
+	
+	private String numberConvert(int number) {
+		StringBuilder num = new StringBuilder(String.valueOf(number));
+		if(num.length() < 3) {
+			num.insert(0, fillChar('0', 3 - num.length()));
+		}
+		
+		return num.toString();
+	}
+	
+	private String fillChar(char ch, int amount) {
+		StringBuilder result = new StringBuilder(amount);
+		for(int i = 0; i < amount; ++i) {
+			result.append(ch);
+		}
+		
+		return result.toString();
 	}
 
 	private void initMenuBar() {
