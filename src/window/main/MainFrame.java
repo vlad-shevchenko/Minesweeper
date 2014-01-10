@@ -3,6 +3,7 @@ package window.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -23,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
+import window.settings.SettingsFrame;
 import main.Const;
 import events.BombsCountListener;
 import events.GameListener;
@@ -62,11 +64,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				timer.stop();
-				lblTime.setText(numberConvert(0));
-				lblBombs.setText(numberConvert(bombs));
-				field.restart(fieldWidth, fieldHeight, bombs);
-				repaint();
+				restart();
 			}
 		});
 		
@@ -75,6 +73,15 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		setResizable(false);
 		pack();
 		setVisible(true);
+	}
+	
+	private void restart() {
+		timer.stop();
+		lblTime.setText(numberConvert(0));
+		lblBombs.setText(numberConvert(bombs));
+		field.restart(fieldWidth, fieldHeight, bombs);
+		pack();
+		repaint();
 	}
 	
 	private String numberConvert(int number) {
@@ -165,12 +172,30 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			mnGame.add(mntmHard);
 	
 			JMenuItem mntmSpecial = new JMenuItem("Special");
+			mntmSpecial.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ev) {
+					invokeSettingsFrame();
+				}
+			});
 			mnGame.add(mntmSpecial);
 	
 			mnGame.addSeparator();
 			
 			JMenuItem mntmExit = new JMenuItem("Exit");
 			mnGame.add(mntmExit);
+	}
+	
+	private void invokeSettingsFrame() {
+		SettingsFrame settings = new SettingsFrame(this, fieldWidth, fieldHeight, bombs);
+		settings.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
+	}
+	
+	public void changeSettings(int width, int height, int bombs) {
+		fieldWidth = width;
+		fieldHeight = height;
+		this.bombs = bombs;
+		
+		restart();
 	}
 
 	@Override
