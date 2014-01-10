@@ -30,5 +30,8 @@ public abstract class Const {
 	public static final Image BombActiveIcon = new ImageIcon(
 			"res\\bomb_active.png").getImage().getScaledInstance(CellSize, CellSize,
 					Image.SCALE_DEFAULT);
+	public static final Image MaybeBomb = new ImageIcon("res\\flag.png")
+			.getImage().getScaledInstance(CellSize, CellSize,
+					Image.SCALE_DEFAULT);
 
 }

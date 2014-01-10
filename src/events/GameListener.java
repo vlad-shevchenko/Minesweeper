@@ -7,6 +7,6 @@ package events;
  */
 public interface GameListener {
 
-	public void endOfGame(EndOfGameEvent ev);
-	public void startGame(StartGameEvent ev);
+	public void endOfGame(boolean win);
+	public void startGame();
 }

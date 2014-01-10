@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,22 +13,23 @@ import main.Const;
 
 public class Cell {
 
+	private static final Font DefaultCellFont = new Font("ArialBlack", Font.PLAIN, 12);
+	private static final Font UnknownCellFont = new Font("ArialBlack", Font.BOLD, 15);
 	private boolean bomb;
 	private int bombsAround;
 	private CellState state;
 	private JButton cellContent;
-	private ActionListener listener;
+	private MouseListener listener;
 	
-	public Cell(ActionListener listener, CellState state) {
+	public Cell(MouseListener listener, CellState state) {
 		this.listener = listener;
 		
 		cellContent = new JButton(".");
 		cellContent.setPreferredSize(new Dimension(Const.CellSize, Const.CellSize));
 		cellContent.setMaximumSize(new Dimension(Const.CellSize, Const.CellSize));
-		cellContent.setFont(new Font("ArialBlack", Font.PLAIN, 12));
 		cellContent.setMargin(new Insets(0, 0, 0, 0));
 		cellContent.setFocusable(false);
-		cellContent.addActionListener(listener);
+		cellContent.addMouseListener(listener);
 		
 		setState(state);
 	}
@@ -43,6 +43,7 @@ public class Cell {
 			cellContent.setText("");
 			break;
 		case Opened:
+			cellContent.setFont(DefaultCellFont);
 			cellContent.setEnabled(false);
 			cellContent.setText(String.valueOf((bombsAround > 0) ? bombsAround : ""));
 			if(bombsAround >= 3 && bombsAround <= 5) {
@@ -64,6 +65,17 @@ public class Cell {
 			cellContent.setDisabledIcon(new ImageIcon(Const.BombActiveIcon));
 			cellContent.setText("");
 			cellContent.setEnabled(false);
+			break;
+		case Unknown:
+			cellContent.setIcon(null);
+			cellContent.setText("?");
+			cellContent.setEnabled(true);
+			cellContent.setFont(UnknownCellFont);
+			break;
+		case MaybeBomb:
+			cellContent.setIcon(new ImageIcon(Const.MaybeBomb));
+			cellContent.setText("");
+			cellContent.setEnabled(true);
 			break;
 		}
 	}

@@ -5,26 +5,33 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import events.BombsCountListener;
-import events.GameListener;
-import events.StartGameEvent;
 import main.Const;
 import window.cell.Cell;
 import window.cell.CellState;
+import events.BombsCountListener;
+import events.GameListener;
 
-public class Field extends JPanel implements ActionListener {
+public class Field extends JPanel {
 
 	private Cell[][] cells;
 	
 	private GameListener gameListener;
 	private BombsCountListener bombsListener;
 	
+	private MouseHandler mouseListener = new MouseHandler();
+	
 	private boolean started;
+	
+	private int bombsCount = Const.DefaultBombsCount;
+	private int closedCells = Const.DefaultFieldWidth * Const.DefaultFieldHeight;
 	
 	public Field() {
 		GridLayout layout = new GridLayout(Const.DefaultFieldHeight, Const.DefaultFieldWidth, Const.CellGapSize, Const.CellGapSize);
@@ -38,7 +45,7 @@ public class Field extends JPanel implements ActionListener {
 		cells = new Cell[Const.DefaultFieldWidth][Const.DefaultFieldHeight];
 		for(int i = 0; i < Const.DefaultFieldWidth; ++i) {
 			for(int j = 0; j < Const.DefaultFieldHeight; ++j) {
-				cells[i][j] = new Cell(this, CellState.Closed);
+				cells[i][j] = new Cell(mouseListener, CellState.Closed);
 				add(cells[i][j].getContent());
 			}
 		}
@@ -101,6 +108,7 @@ public class Field extends JPanel implements ActionListener {
 				if(cell != null) {
 					if(cell.getState() != CellState.Opened) {
 						cell.setState(CellState.Opened);
+						closedCells--;
 						
 						if(cell.getBombsCount() == 0) {
 							Point cords = findButtonCords(cell.getContent());
@@ -122,29 +130,11 @@ public class Field extends JPanel implements ActionListener {
 		
 		return null;
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent ev) {
-		JButton source = (JButton) ev.getSource();
-		Point cords = findButtonCords(source);
-		Cell sourceCell = cells[cords.x][cords.y];
-		
-		if (sourceCell != null) {
-			if(!started) {
-				started = true;
-				gameListener.startGame(new StartGameEvent(this));
-			}
-			if (sourceCell.isBomb()) {
-				bombActivated();
-				sourceCell.setState(CellState.Bomb_active);
-			} else {
-				sourceCell.setState(CellState.Opened);
-				if (sourceCell.getBombsCount() == 0) {
-					openAround(cords.x, cords.y);
-				}
-			}
+	
+	private void checkGameEnd() {
+		if(closedCells == Const.DefaultBombsCount) {
+			gameListener.endOfGame(true);
 		}
-		return;
 	}
 	
 	public void setGameListener(GameListener listener) {
@@ -179,5 +169,53 @@ public class Field extends JPanel implements ActionListener {
 				}
 			}
 		}
+	}
+	
+	private class MouseHandler extends MouseAdapter {
+		
+		@Override
+		public void mousePressed(MouseEvent ev) {
+			JButton source = (JButton) ev.getSource();
+			Point cords = findButtonCords(source);
+			Cell sourceCell = cells[cords.x][cords.y];
+			
+			if(ev.getButton() == MouseEvent.BUTTON3) {
+				switch(sourceCell.getState()) {
+				case Closed:
+					sourceCell.setState(CellState.MaybeBomb);
+					bombsListener.updateBombsCount(--bombsCount);
+					break;
+				case MaybeBomb:
+					sourceCell.setState(CellState.Unknown);
+					bombsListener.updateBombsCount(++bombsCount);
+					break;
+				case Unknown:
+					sourceCell.setState(CellState.Closed);
+					break;
+				}
+			} else if (ev.getButton() == MouseEvent.BUTTON1) {
+				if (sourceCell != null) {
+					if(!started) {
+						started = true;
+						gameListener.startGame();
+					}
+					if (sourceCell.isBomb()) {
+						bombActivated();
+						sourceCell.setState(CellState.Bomb_active);
+					} else {
+						sourceCell.setState(CellState.Opened);
+						closedCells--;
+						
+						if (sourceCell.getBombsCount() == 0) {
+							openAround(cords.x, cords.y);
+						}
+						
+						checkGameEnd();
+					}
+				}
+			}
+			return;
+		}
+		
 	}
 }

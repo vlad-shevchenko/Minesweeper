@@ -18,15 +18,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
 import main.Const;
 import events.BombsCountListener;
-import events.EndOfGameEvent;
 import events.GameListener;
-import events.StartGameEvent;
 
 /**
  * Main window of program. Contains field [...]
@@ -161,17 +160,25 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	}
 
 	@Override
-	public void endOfGame(EndOfGameEvent ev) {
-		
+	public void endOfGame(boolean win) {
+		timer.stop();
+		if(win) {
+			JOptionPane.showMessageDialog(this, "Congratulations! You'he won in "
+					+ secondsOfGame + " seconds!", "Win!",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(this, "I'm sorry, you've losed :(",
+					"Lose!", JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	@Override
-	public void startGame(StartGameEvent ev) {
+	public void startGame() {
 		timer.start();
 	}
 
 	@Override
 	public void updateBombsCount(int newCount) {
-		
+		lblBombs.setText(numberConvert(newCount));
 	}
 }

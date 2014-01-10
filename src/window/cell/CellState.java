@@ -5,6 +5,8 @@ public enum CellState {
 	Closed,
 	Opened,
 	Bomb_inactive,
-	Bomb_active;
+	Bomb_active,
+	Unknown,
+	MaybeBomb;
 	
 }
