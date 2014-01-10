@@ -73,6 +73,46 @@ public class Field extends JPanel {
 		}
 	}
 	
+	public void restart(int fWidth, int fHeight, int bombs) {
+		fieldWidth = fWidth;
+		fieldHeight = fHeight;
+		initialBombsCount = bombs;
+		uncheckedBombsCount = bombs;
+		closedCells = fieldWidth * fieldHeight;
+		started = false;
+		
+		removeAll();
+		
+		GridLayout layout = new GridLayout(fieldHeight, fieldWidth, Const.CellGapSize, Const.CellGapSize);
+		setLayout(layout);
+
+		int width = fieldWidth * (Const.CellSize + Const.CellGapSize);
+		int height = fieldHeight * (Const.CellSize + Const.CellGapSize);
+		setPreferredSize(new Dimension(width, height));
+		setMaximumSize(getPreferredSize());
+		
+		cells = new Cell[fieldWidth][fieldHeight];
+		for(int i = 0; i < fieldWidth; ++i) {
+			for(int j = 0; j < fieldHeight; ++j) {
+				cells[i][j] = new Cell(mouseListener, CellState.Closed);
+				add(cells[i][j].getContent());
+			}
+		}
+		
+		Random rand = new Random();
+		for(int i = 0; i < initialBombsCount; ++i) {
+			int x = rand.nextInt(fieldWidth);
+			int y = rand.nextInt(fieldHeight);
+			
+			if(!cells[x][y].isBomb()) {
+				cells[x][y].setBomb(true);
+				incAround(x, y);
+			} else {
+				i--;
+			}
+		}
+	}
+	
 	private Cell[][] getSubArray(int x, int y, int radius) {
 		int maxX = fieldWidth;
 		int maxY = fieldHeight;

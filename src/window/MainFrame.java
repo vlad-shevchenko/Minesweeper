@@ -43,6 +43,10 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	private Timer timer;
 	private int secondsOfGame;
 	
+	private int fieldWidth = Const.DefaultFieldWidth;
+	private int fieldHeight = Const.DefaultFieldHeight;
+	private int bombs = Const.DefaultBombsCount;
+	
 	private JMenuBar menuBar;
 	
 	public MainFrame() {
@@ -53,6 +57,16 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				lblTime.setText(numberConvert(secondsOfGame++));
+			}
+		});
+		
+		btnNewGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				timer.stop();
+				lblTime.setText(numberConvert(0));
+				lblBombs.setText(numberConvert(bombs));
+				field.restart(fieldWidth, fieldHeight, bombs);
+				repaint();
 			}
 		});
 		
@@ -82,7 +96,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	}
 	
 	private void initFrameContent() {
-		field = new Field(Const.DefaultFieldWidth, Const.DefaultFieldHeight, Const.DefaultBombsCount);
+		field = new Field(fieldWidth, fieldHeight, bombs);
 		field.setGameListener(this);
 		field.setBombsCountListener(this);
 		field.setBorder(new LineBorder(new Color(0, 0, 0)));
