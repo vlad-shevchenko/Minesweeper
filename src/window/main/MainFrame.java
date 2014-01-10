@@ -45,9 +45,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	private Timer timer;
 	private int secondsOfGame;
 	
-	private int fieldWidth = Const.DefaultFieldWidth;
-	private int fieldHeight = Const.DefaultFieldHeight;
-	private int bombs = Const.DefaultBombsCount;
+	private int fieldWidth = Const.EasyFieldWidth;
+	private int fieldHeight = Const.EasyFieldHeight;
+	private int bombs = Const.EasyBombsCount;
 	
 	private JMenuBar menuBar;
 	
@@ -139,7 +139,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		Component horizontalGlue_1 = Box.createHorizontalGlue();
 		pnlHeader.add(horizontalGlue_1);
 
-		lblBombs.setText(numberConvert(Const.DefaultBombsCount));
+		lblBombs.setText(numberConvert(Const.EasyBombsCount));
 		lblBombs.setOpaque(true);
 		lblBombs.setBackground(new Color(0, 0, 139));
 		lblBombs.setForeground(new Color(165, 42, 42));
@@ -158,17 +158,40 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		menuBar.add(mnGame);
 
 			JMenuItem mntmNewGame = new JMenuItem("New game");
+			mntmNewGame.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					restart();
+				}
+			});
 			mnGame.add(mntmNewGame);
 			
 			mnGame.addSeparator();
 	
 			JMenuItem mntmEasy = new JMenuItem("Easy");
+			mntmEasy.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				changeSettings(Const.EasyFieldWidth, Const.EasyFieldHeight,
+						Const.EasyBombsCount);
+				}
+			});
 			mnGame.add(mntmEasy);
 	
 			JMenuItem mntmMedium = new JMenuItem("Medium");
+			mntmMedium.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				changeSettings(Const.MediumFieldWidth, Const.MediumFieldHeight,
+						Const.MediumBombsCount);
+				}
+			});
 			mnGame.add(mntmMedium);
 	
 			JMenuItem mntmHard = new JMenuItem("Hard");
+			mntmHard.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				changeSettings(Const.HardFieldWidth, Const.HardFieldHeight,
+						Const.HardBombsCount);
+				}
+			});
 			mnGame.add(mntmHard);
 	
 			JMenuItem mntmSpecial = new JMenuItem("Special");
@@ -182,6 +205,11 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			mnGame.addSeparator();
 			
 			JMenuItem mntmExit = new JMenuItem("Exit");
+			mntmExit.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					System.exit(0);
+				}
+			});
 			mnGame.add(mntmExit);
 	}
 	

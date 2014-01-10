@@ -12,12 +12,21 @@ import javax.swing.ImageIcon;
 public abstract class Const {
 
 	// Game
-	public static final int DefaultFieldWidth = 9;
-	public static final int DefaultFieldHeight = 9;
-	public static final int DefaultBombsCount = 10;
+	// Easy
+	public static final int EasyFieldWidth = 9;
+	public static final int EasyFieldHeight = 9;
+	public static final int EasyBombsCount = 10;
+	// Medium
+	public static final int MediumFieldWidth = 15;
+	public static final int MediumFieldHeight = 15;
+	public static final int MediumBombsCount = 25;
+	// Hard
+	public static final int HardFieldWidth = 25;
+	public static final int HardFieldHeight = 25;
+	public static final int HardBombsCount = 70;
 
 	// Graphics
-	public static final int CellSize = 30;
+	public static final int CellSize = 20;
 	public static final int CellGapSize = 1;
 
 	public static final Image NegativeSmileIcon = new ImageIcon("res\\neg.png")

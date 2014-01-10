@@ -119,7 +119,7 @@ public class SettingsFrame extends JFrame {
 					JOptionPane
 							.showMessageDialog(
 									SettingsFrame.this,
-									"Incorrect values! Only numbers between 5 and 100 allowed.",
+									"Incorrect values! Only numbers allowed and number of bombs must be less then number of cells.",
 									"Incorrect values!",
 									JOptionPane.ERROR_MESSAGE);
 				}
