@@ -23,19 +23,23 @@ import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
 import main.Const;
+import events.BombsCountListener;
+import events.EndOfGameEvent;
+import events.GameListener;
+import events.StartGameEvent;
 
 /**
  * Main window of program. Contains field [...]
  * 
  * @author Влад
  */
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements GameListener, BombsCountListener {
 
 	private final JLabel lblTime = new JLabel();
 	private final JLabel lblBombs = new JLabel();
 	private JButton btnNewGame;
 	
-	private JPanel field;
+	private Field field;
 	
 	private Timer timer;
 	private int secondsOfGame;
@@ -52,7 +56,6 @@ public class MainFrame extends JFrame {
 				lblTime.setText(numberConvert(secondsOfGame++));
 			}
 		});
-		timer.start();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(100, 100);
@@ -81,6 +84,8 @@ public class MainFrame extends JFrame {
 	
 	private void initFrameContent() {
 		field = new Field();
+		field.setGameListener(this);
+		field.setBombsCountListener(this);
 		field.setBorder(new LineBorder(new Color(0, 0, 0)));
 		getContentPane().add(field, BorderLayout.CENTER);
 
@@ -153,5 +158,20 @@ public class MainFrame extends JFrame {
 			
 			JMenuItem mntmExit = new JMenuItem("Exit");
 			mnGame.add(mntmExit);
+	}
+
+	@Override
+	public void endOfGame(EndOfGameEvent ev) {
+		
+	}
+
+	@Override
+	public void startGame(StartGameEvent ev) {
+		timer.start();
+	}
+
+	@Override
+	public void updateBombsCount(int newCount) {
+		
 	}
 }

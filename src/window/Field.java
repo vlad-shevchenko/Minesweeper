@@ -10,6 +10,9 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import events.BombsCountListener;
+import events.GameListener;
+import events.StartGameEvent;
 import main.Const;
 import window.cell.Cell;
 import window.cell.CellState;
@@ -17,6 +20,11 @@ import window.cell.CellState;
 public class Field extends JPanel implements ActionListener {
 
 	private Cell[][] cells;
+	
+	private GameListener gameListener;
+	private BombsCountListener bombsListener;
+	
+	private boolean started;
 	
 	public Field() {
 		GridLayout layout = new GridLayout(Const.DefaultFieldHeight, Const.DefaultFieldWidth, Const.CellGapSize, Const.CellGapSize);
@@ -121,16 +129,46 @@ public class Field extends JPanel implements ActionListener {
 		Point cords = findButtonCords(source);
 		Cell sourceCell = cells[cords.x][cords.y];
 		
-		if (sourceCell.isBomb()) {
-			bombActivated();
-			sourceCell.setState(CellState.Bomb_active);
-		} else {
-			sourceCell.setState(CellState.Opened);
-			if (sourceCell.getBombsCount() == 0) {
-				openAround(cords.x, cords.y);
+		if (sourceCell != null) {
+			if(!started) {
+				started = true;
+				gameListener.startGame(new StartGameEvent(this));
+			}
+			if (sourceCell.isBomb()) {
+				bombActivated();
+				sourceCell.setState(CellState.Bomb_active);
+			} else {
+				sourceCell.setState(CellState.Opened);
+				if (sourceCell.getBombsCount() == 0) {
+					openAround(cords.x, cords.y);
+				}
 			}
 		}
 		return;
+	}
+	
+	public void setGameListener(GameListener listener) {
+		this.gameListener = listener;
+	}
+	
+	public GameListener getGameListener() {
+		return gameListener;
+	}
+	
+	public void removeGameListener() {
+		gameListener = null;
+	}
+
+	public BombsCountListener getBombsCountListener() {
+		return bombsListener;
+	}
+
+	public void setBombsCountListener(BombsCountListener bombsListener) {
+		this.bombsListener = bombsListener;
+	}
+	
+	public void removeBombsCountListener() {
+		bombsListener = null;
 	}
 	
 	private void bombActivated() {

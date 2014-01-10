@@ -1,5 +1,6 @@
 package events;
 
+import java.awt.AWTEvent;
 import java.awt.Event;
 
 /**
@@ -7,10 +8,9 @@ import java.awt.Event;
  * 
  * @author Влад
  */
-public class StartGameEvent extends Event {
+public class StartGameEvent extends AWTEvent {
 
-	public StartGameEvent(Object target, int id, Object arg) {
-		super(target, id, arg);
+	public StartGameEvent(Object source) {
+		super(source, 0);
 	}
-
 }
