@@ -23,37 +23,46 @@ public class Field extends JPanel {
 
 	private Cell[][] cells;
 	
+	private int fieldWidth;
+	private int fieldHeight;
+	private int initialBombsCount;
+	
 	private GameListener gameListener;
 	private BombsCountListener bombsListener;
-	
 	private MouseHandler mouseListener = new MouseHandler();
 	
 	private boolean started;
 	
-	private int bombsCount = Const.DefaultBombsCount;
-	private int closedCells = Const.DefaultFieldWidth * Const.DefaultFieldHeight;
+	private int uncheckedBombsCount;
+	private int closedCells;
 	
-	public Field() {
-		GridLayout layout = new GridLayout(Const.DefaultFieldHeight, Const.DefaultFieldWidth, Const.CellGapSize, Const.CellGapSize);
+	public Field(int fWidth, int fHeight, int bombs) {
+		fieldWidth = fWidth;
+		fieldHeight = fHeight;
+		initialBombsCount = bombs;
+		uncheckedBombsCount = bombs;
+		closedCells = fieldWidth * fieldHeight;
+		
+		GridLayout layout = new GridLayout(fieldHeight, fieldWidth, Const.CellGapSize, Const.CellGapSize);
 		setLayout(layout);
 
-		int width = Const.DefaultFieldWidth * (Const.CellSize + Const.CellGapSize);
-		int height = Const.DefaultFieldHeight * (Const.CellSize + Const.CellGapSize);
+		int width = fieldWidth * (Const.CellSize + Const.CellGapSize);
+		int height = fieldHeight * (Const.CellSize + Const.CellGapSize);
 		setPreferredSize(new Dimension(width, height));
 		setMaximumSize(getPreferredSize());
 		
-		cells = new Cell[Const.DefaultFieldWidth][Const.DefaultFieldHeight];
-		for(int i = 0; i < Const.DefaultFieldWidth; ++i) {
-			for(int j = 0; j < Const.DefaultFieldHeight; ++j) {
+		cells = new Cell[fieldWidth][fieldHeight];
+		for(int i = 0; i < fieldWidth; ++i) {
+			for(int j = 0; j < fieldHeight; ++j) {
 				cells[i][j] = new Cell(mouseListener, CellState.Closed);
 				add(cells[i][j].getContent());
 			}
 		}
 		
 		Random rand = new Random();
-		for(int i = 0; i < Const.DefaultBombsCount; ++i) {
-			int x = rand.nextInt(Const.DefaultFieldWidth);
-			int y = rand.nextInt(Const.DefaultFieldHeight);
+		for(int i = 0; i < initialBombsCount; ++i) {
+			int x = rand.nextInt(fieldWidth);
+			int y = rand.nextInt(fieldHeight);
 			
 			if(!cells[x][y].isBomb()) {
 				cells[x][y].setBomb(true);
@@ -65,8 +74,8 @@ public class Field extends JPanel {
 	}
 	
 	private Cell[][] getSubArray(int x, int y, int radius) {
-		int maxX = Const.DefaultFieldWidth;
-		int maxY = Const.DefaultFieldHeight;
+		int maxX = fieldWidth;
+		int maxY = fieldHeight;
 		
 		Cell[][] result = new Cell[radius * 2 + 1][radius * 2 + 1];
 		
@@ -132,7 +141,7 @@ public class Field extends JPanel {
 	}
 	
 	private void checkGameEnd() {
-		if(closedCells == Const.DefaultBombsCount) {
+		if(closedCells == initialBombsCount) {
 			gameListener.endOfGame(true);
 		}
 	}
@@ -183,11 +192,11 @@ public class Field extends JPanel {
 				switch(sourceCell.getState()) {
 				case Closed:
 					sourceCell.setState(CellState.MaybeBomb);
-					bombsListener.updateBombsCount(--bombsCount);
+					bombsListener.updateBombsCount(--uncheckedBombsCount);
 					break;
 				case MaybeBomb:
 					sourceCell.setState(CellState.Unknown);
-					bombsListener.updateBombsCount(++bombsCount);
+					bombsListener.updateBombsCount(++uncheckedBombsCount);
 					break;
 				case Unknown:
 					sourceCell.setState(CellState.Closed);
@@ -202,6 +211,7 @@ public class Field extends JPanel {
 					if (sourceCell.isBomb()) {
 						bombActivated();
 						sourceCell.setState(CellState.Bomb_active);
+						gameListener.endOfGame(false);
 					} else {
 						sourceCell.setState(CellState.Opened);
 						closedCells--;

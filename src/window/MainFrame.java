@@ -82,7 +82,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	}
 	
 	private void initFrameContent() {
-		field = new Field();
+		field = new Field(Const.DefaultFieldWidth, Const.DefaultFieldHeight, Const.DefaultBombsCount);
 		field.setGameListener(this);
 		field.setBombsCountListener(this);
 		field.setBorder(new LineBorder(new Color(0, 0, 0)));
