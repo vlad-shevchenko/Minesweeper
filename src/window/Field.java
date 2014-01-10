@@ -1,8 +1,8 @@
 package window;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -49,6 +49,25 @@ public class Field extends JPanel implements ActionListener {
 		}
 	}
 	
+	private Cell[][] getSubArray(int x, int y, int radius) {
+		int maxX = Const.DefaultFieldWidth;
+		int maxY = Const.DefaultFieldHeight;
+		
+		Cell[][] result = new Cell[radius * 2 + 1][radius * 2 + 1];
+		
+		for(int i = x - radius; i <= x + radius; ++i) {
+			for(int j = y - radius; j <= y + radius; ++j) {
+				if(i >= 0 && i < maxX && j >= 0 && j < maxY) {
+					result[i - (x - radius)][j - (y - radius)] = cells[i][j];
+				} else {
+					result[i - (x - radius)][j - (y - radius)] = null;
+				}
+			}
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Increase count of bombs in all cells close to target one
 	 * 
@@ -56,20 +75,71 @@ public class Field extends JPanel implements ActionListener {
 	 * @param y - row of cell
 	 */
 	private void incAround(int x, int y) {
-		int maxX = Const.DefaultFieldWidth;
-		int maxY = Const.DefaultFieldHeight;
-		if(x - 1 >= 0 && y - 1 >= 0) cells[x - 1][y - 1].incBombsCount();
-		if(y - 1 >= 0) cells[x][y - 1].incBombsCount();
-		if(x + 1 < maxX && y - 1 >= 0) cells[x + 1][y - 1].incBombsCount();
-		if(x - 1 >= 0) cells[x - 1][y].incBombsCount();
-		if(x + 1 < maxX) cells[x + 1][y].incBombsCount();
-		if(x - 1 >= 0 && y + 1 < maxY) cells[x - 1][y + 1].incBombsCount();
-		cells[x][y].incBombsCount();
-		if(x + 1 < maxX && y + 1 < maxY) cells[x + 1][y + 1].incBombsCount();
+		Cell[][] subArray = getSubArray(x, y, 1);
+		for(int i = 0; i < subArray.length; ++i) {
+			for(int j = 0; j < subArray[0].length; ++j) {
+				if(subArray[i][j] != null) {
+					subArray[i][j].incBombsCount();
+				}
+			}
+		}
+	}
+	
+	private void openAround(int x, int y) {
+		Cell[][] subArray = getSubArray(x, y, 1);
+		for(int i = 0; i < subArray.length; ++i) {
+			for(int j = 0; j < subArray[0].length; ++j) {
+				Cell cell = subArray[i][j];
+				if(cell != null) {
+					if(cell.getState() != CellState.Opened) {
+						cell.setState(CellState.Opened);
+						
+						if(cell.getBombsCount() == 0) {
+							Point cords = findButtonCords(cell.getContent());
+							openAround(cords.x, cords.y);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private Point findButtonCords(JButton button) {
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				if(cells[i][j].getContent() == button)
+					return new Point(i, j);
+			}
+		}
+		
+		return null;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
+		JButton source = (JButton) ev.getSource();
+		Point cords = findButtonCords(source);
+		Cell sourceCell = cells[cords.x][cords.y];
 		
+		if (sourceCell.isBomb()) {
+			bombActivated();
+			sourceCell.setState(CellState.Bomb_active);
+		} else {
+			sourceCell.setState(CellState.Opened);
+			if (sourceCell.getBombsCount() == 0) {
+				openAround(cords.x, cords.y);
+			}
+		}
+		return;
+	}
+	
+	private void bombActivated() {
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[0].length; j++) {
+				if(cells[i][j].isBomb()) {
+					cells[i][j].setState(CellState.Bomb_inactive);
+				}
+			}
+		}
 	}
 }

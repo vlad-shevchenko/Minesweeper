@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
@@ -28,6 +29,7 @@ public class Cell {
 		cellContent.setFont(new Font("ArialBlack", Font.PLAIN, 12));
 		cellContent.setMargin(new Insets(0, 0, 0, 0));
 		cellContent.setFocusable(false);
+		cellContent.addActionListener(listener);
 		
 		setState(state);
 	}
@@ -39,11 +41,10 @@ public class Cell {
 		case Closed:
 			cellContent.setEnabled(true);
 			cellContent.setText("");
-			cellContent.addActionListener(listener);
 			break;
 		case Opened:
 			cellContent.setEnabled(false);
-			cellContent.setText(String.valueOf(bombsAround > 0 ? bombsAround : ""));
+			cellContent.setText(String.valueOf((bombsAround > 0) ? bombsAround : ""));
 			if(bombsAround >= 3 && bombsAround <= 5) {
 				cellContent.setBackground(Color.ORANGE);
 			} else if(bombsAround > 5 && bombsAround <= 7) {
@@ -54,11 +55,13 @@ public class Cell {
 			break;
 		case Bomb_inactive: 
 			cellContent.setIcon(new ImageIcon(Const.BombInactiveIcon));
+			cellContent.setDisabledIcon(new ImageIcon(Const.BombInactiveIcon));
 			cellContent.setText("");
 			cellContent.setEnabled(false);
 			break;
 		case Bomb_active: 
 			cellContent.setIcon(new ImageIcon(Const.BombActiveIcon));
+			cellContent.setDisabledIcon(new ImageIcon(Const.BombActiveIcon));
 			cellContent.setText("");
 			cellContent.setEnabled(false);
 			break;
