@@ -61,7 +61,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		initFrameContent();
 		initMenuBar();
 		
-		timer = new Timer(5000, new ActionListener() {
+		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				lblTime.setText(numberConvert(secondsOfGame++));

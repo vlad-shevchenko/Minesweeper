@@ -68,9 +68,24 @@ public class Records {
 		}
 	}
 	
+	public void clearEasy() {
+		easyList = new ArrayList();
+		writeEasy();
+	}
+	
+	public void clearMedium() {
+		mediumList = new ArrayList();
+		writeMedium();
+	}
+	
+	public void clearHard() {
+		hardList = new ArrayList();
+		writeHard();
+	}
+	
 	public void addEasy(String name, int time) {
 		for(int i = 0; i < easyList.size() + 1 && i < 10; ++i) {
-			if(i >= easyList.size() || time > ((Record) easyList.get(i)).getTime()) {
+			if(i >= easyList.size() || time < ((Record) easyList.get(i)).getTime()) {
 				easyList.add(i, new Record(name, time));
 				break;
 			}
@@ -103,7 +118,7 @@ public class Records {
 	
 	public void addMedium(String name, int time) {
 		for(int i = 0; i < mediumList.size() + 1 && i < 10; ++i) {
-			if(i >= mediumList.size() || time > ((Record) mediumList.get(i)).getTime()) {
+			if(i >= mediumList.size() || time < ((Record) mediumList.get(i)).getTime()) {
 				mediumList.add(i, new Record(name, time));
 				break;
 			}
@@ -136,7 +151,7 @@ public class Records {
 	
 	public void addHard(String name, int time) {
 		for(int i = 0; i < hardList.size() + 1 && i < 10; ++i) {
-			if(i >= hardList.size() || time > ((Record) hardList.get(i)).getTime()) {
+			if(i >= hardList.size() || time < ((Record) hardList.get(i)).getTime()) {
 				hardList.add(i, new Record(name, time));
 				break;
 			}
@@ -236,7 +251,7 @@ public class Records {
 		
 		@Override
 		public String toString() {
-			return name + " " + time;
+			return name + " - " + time;
 		}
 	}
 }
