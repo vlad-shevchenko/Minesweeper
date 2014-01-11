@@ -24,8 +24,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
-import window.settings.SettingsFrame;
 import main.Const;
+import window.champions.Records;
+import window.champions.RecordsFrame;
+import window.settings.SettingsFrame;
 import events.BombsCountListener;
 import events.GameListener;
 
@@ -51,6 +53,10 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	
 	private JMenuBar menuBar;
 	
+	private GameDifficulty difficulty;
+	
+	private Records records;
+	
 	public MainFrame() {
 		initFrameContent();
 		initMenuBar();
@@ -67,6 +73,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 				restart();
 			}
 		});
+		
+		records = new Records();
+		difficulty = GameDifficulty.Easy;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(100, 100);
@@ -172,6 +181,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 				public void actionPerformed(ActionEvent e) {
 				changeSettings(Const.EasyFieldWidth, Const.EasyFieldHeight,
 						Const.EasyBombsCount);
+				difficulty = GameDifficulty.Easy;
 				}
 			});
 			mnGame.add(mntmEasy);
@@ -181,6 +191,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 				public void actionPerformed(ActionEvent e) {
 				changeSettings(Const.MediumFieldWidth, Const.MediumFieldHeight,
 						Const.MediumBombsCount);
+				difficulty = GameDifficulty.Medium;
 				}
 			});
 			mnGame.add(mntmMedium);
@@ -190,6 +201,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 				public void actionPerformed(ActionEvent e) {
 				changeSettings(Const.HardFieldWidth, Const.HardFieldHeight,
 						Const.HardBombsCount);
+				difficulty = GameDifficulty.Hard;
 				}
 			});
 			mnGame.add(mntmHard);
@@ -198,9 +210,20 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			mntmSpecial.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ev) {
 					invokeSettingsFrame();
+					difficulty = GameDifficulty.Special;
 				}
 			});
 			mnGame.add(mntmSpecial);
+			
+			mnGame.addSeparator();
+			
+			JMenuItem mntmRecords = new JMenuItem("Records");
+			mntmRecords.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					invokeRecordsFrame(difficulty);
+				}
+			});
+			mnGame.add(mntmRecords);
 	
 			mnGame.addSeparator();
 			
@@ -213,6 +236,11 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			mnGame.add(mntmExit);
 	}
 	
+	private void invokeRecordsFrame(GameDifficulty defaultList) {
+		RecordsFrame recordsFrame = new RecordsFrame(records, defaultList);
+		recordsFrame.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
+	}
+	
 	private void invokeSettingsFrame() {
 		SettingsFrame settings = new SettingsFrame(this, fieldWidth, fieldHeight, bombs);
 		settings.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
@@ -222,6 +250,20 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		fieldWidth = width;
 		fieldHeight = height;
 		this.bombs = bombs;
+		
+		if (width == Const.EasyFieldWidth 
+				&& height == Const.EasyFieldHeight
+				&& bombs == Const.EasyBombsCount) {
+			difficulty = GameDifficulty.Easy;
+		} else if (width == Const.MediumFieldWidth
+				&& height == Const.MediumFieldHeight
+				&& bombs == Const.MediumBombsCount) {
+			difficulty = GameDifficulty.Medium;
+		} else if (width == Const.HardFieldWidth
+				&& height == Const.HardFieldHeight
+				&& bombs == Const.HardBombsCount) {
+			difficulty = GameDifficulty.Hard;
+		}
 		
 		restart();
 	}
@@ -233,6 +275,33 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			JOptionPane.showMessageDialog(this, "Congratulations! You'he won in "
 					+ secondsOfGame + " seconds!", "Win!",
 					JOptionPane.INFORMATION_MESSAGE);
+			
+			String name = null;
+			switch(difficulty) {
+			case Easy:
+				if(records.isWritableIntoEasy(secondsOfGame)) {
+					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
+					records.addEasy(name, secondsOfGame);
+					invokeRecordsFrame(GameDifficulty.Easy);
+				}
+				break;
+			case Medium:
+				if(records.isWritableIntoMedium(secondsOfGame)) {
+					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
+					records.addMedium(name, secondsOfGame);
+					invokeRecordsFrame(GameDifficulty.Medium);
+				}
+				break;
+			case Hard:
+				if(records.isWritableIntoHard(secondsOfGame)) {
+					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
+					records.addHard(name, secondsOfGame);
+					invokeRecordsFrame(GameDifficulty.Hard);
+				}
+				break;
+			case Special:
+				break;
+			}
 		} else {
 			JOptionPane.showMessageDialog(this, "I'm sorry, you've losed :(",
 					"Lose!", JOptionPane.INFORMATION_MESSAGE);
