@@ -277,30 +277,10 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 					JOptionPane.INFORMATION_MESSAGE);
 			
 			String name = null;
-			switch(difficulty) {
-			case Easy:
-				if(records.isWritableIntoEasy(secondsOfGame)) {
-					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
-					records.addEasy(name, secondsOfGame);
-					invokeRecordsFrame(GameDifficulty.Easy);
-				}
-				break;
-			case Medium:
-				if(records.isWritableIntoMedium(secondsOfGame)) {
-					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
-					records.addMedium(name, secondsOfGame);
-					invokeRecordsFrame(GameDifficulty.Medium);
-				}
-				break;
-			case Hard:
-				if(records.isWritableIntoHard(secondsOfGame)) {
-					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
-					records.addHard(name, secondsOfGame);
-					invokeRecordsFrame(GameDifficulty.Hard);
-				}
-				break;
-			case Special:
-				break;
+			if(records.canWrite(difficulty, secondsOfGame)) {
+				name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
+				records.addRecord(difficulty, name, secondsOfGame);
+				invokeRecordsFrame(GameDifficulty.Easy); 
 			}
 		} else {
 			JOptionPane.showMessageDialog(this, "I'm sorry, you've losed :(",

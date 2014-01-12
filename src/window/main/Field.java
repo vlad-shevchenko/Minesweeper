@@ -252,7 +252,7 @@ public class Field extends JPanel {
 						bombActivated();
 						sourceCell.setState(CellState.Bomb_active);
 						gameListener.endOfGame(false);
-					} else {
+					} else if (sourceCell.getState() != CellState.Opened) {
 						sourceCell.setState(CellState.Opened);
 						closedCells--;
 						

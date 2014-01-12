@@ -5,16 +5,14 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 /**
- * Abstract class with static final field for encapsulation of constants.
+ * Abstract class with static final fields for encapsulation of constants.
  * 
  * @author Влад
  */
 public abstract class Const {
 
 	// Game
-	public static final String EasyRecordsFile = "res\\easy.ser";
-	public static final String MediumRecordsFile = "res\\medium.ser";
-	public static final String HardRecordsFile = "res\\hard.ser";
+	public static final String RecordsFile = "res\\records.ser";
 	
 	// Easy
 	public static final int EasyFieldWidth = 9;
@@ -34,6 +32,10 @@ public abstract class Const {
 	// Graphics
 	public static final int CellSize = 20;
 	public static final int CellGapSize = 1;
+	
+	public static final String[] TableColumnNames = {
+		"Player name", "Time"
+	};
 
 	public static final Image NegativeSmileIcon = new ImageIcon("res\\neg.png")
 			.getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
