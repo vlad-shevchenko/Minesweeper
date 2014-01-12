@@ -32,6 +32,7 @@ public class Field extends JPanel {
 	private MouseHandler mouseListener = new MouseHandler();
 	
 	private boolean started;
+	private boolean ended;
 	
 	private int uncheckedBombsCount;
 	private int closedCells;
@@ -42,6 +43,7 @@ public class Field extends JPanel {
 		initialBombsCount = bombs;
 		uncheckedBombsCount = bombs;
 		closedCells = fieldWidth * fieldHeight;
+		ended = false;
 		
 		GridLayout layout = new GridLayout(fieldHeight, fieldWidth, Const.CellGapSize, Const.CellGapSize);
 		setLayout(layout);
@@ -80,6 +82,7 @@ public class Field extends JPanel {
 		uncheckedBombsCount = bombs;
 		closedCells = fieldWidth * fieldHeight;
 		started = false;
+		ended = false;
 		
 		removeAll();
 		
@@ -224,6 +227,8 @@ public class Field extends JPanel {
 		
 		@Override
 		public void mousePressed(MouseEvent ev) {
+			if(ended) return;
+			
 			JButton source = (JButton) ev.getSource();
 			Point cords = findButtonCords(source);
 			Cell sourceCell = cells[cords.x][cords.y];
@@ -251,6 +256,7 @@ public class Field extends JPanel {
 					if (sourceCell.isBomb()) {
 						bombActivated();
 						sourceCell.setState(CellState.Bomb_active);
+						ended = true;
 						gameListener.endOfGame(false);
 					} else if (sourceCell.getState() != CellState.Opened) {
 						sourceCell.setState(CellState.Opened);

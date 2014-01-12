@@ -66,7 +66,8 @@ public class RecordsFrame extends JFrame {
 	private void initActions() {
 		cbxDifficulty.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent ev) {
-				setList((GameDifficulty) cbxDifficulty.getSelectedItem());
+				difficulty = (GameDifficulty) cbxDifficulty.getSelectedItem();
+				setList(difficulty);
 			}
 		});
 		
@@ -80,7 +81,7 @@ public class RecordsFrame extends JFrame {
 			public void actionPerformed(ActionEvent ev) {
 				records.clearTable(difficulty);
 				
-				tableModel.setData(difficulty);
+				setList(difficulty);
 				
 				pack();
 				repaint();
@@ -155,7 +156,6 @@ public class RecordsFrame extends JFrame {
 		
 		resizeTable();
 		pack();
-//		repaint();
 	}
 	
 	private class RecordsTableModel implements TableModel {

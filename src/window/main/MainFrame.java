@@ -89,6 +89,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		lblTime.setText(numberConvert(0));
 		lblBombs.setText(numberConvert(bombs));
 		field.restart(fieldWidth, fieldHeight, bombs);
+		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon));
 		pack();
 		repaint();
 	}
@@ -272,21 +273,18 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	public void endOfGame(boolean win) {
 		timer.stop();
 		if(win) {
-			JOptionPane.showMessageDialog(this, "Congratulations! You'he won in "
-					+ secondsOfGame + " seconds!", "Win!",
-					JOptionPane.INFORMATION_MESSAGE);
-			
 			if(difficulty != GameDifficulty.Special) {
 				String name = null;
 				if(records.canWrite(difficulty, secondsOfGame)) {
 					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
-					records.addRecord(difficulty, name, secondsOfGame);
-					invokeRecordsFrame(GameDifficulty.Easy); 
+					if(!name.isEmpty()) {
+						records.addRecord(difficulty, name, secondsOfGame);
+						invokeRecordsFrame(difficulty);
+					}
 				}
 			}
 		} else {
-			JOptionPane.showMessageDialog(this, "I'm sorry, you've losed :(",
-					"Lose!", JOptionPane.INFORMATION_MESSAGE);
+			btnNewGame.setIcon(new ImageIcon(Const.NegativeSmileIcon));
 		}
 	}
 
