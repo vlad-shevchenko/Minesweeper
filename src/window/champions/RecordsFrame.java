@@ -112,11 +112,14 @@ public class RecordsFrame extends JFrame {
 		tableModel = new RecordsTableModel(difficulty);
 		recordsTable = new JTable(tableModel);
 		recordsTable.setOpaque(false);
+		recordsTable.setFont(new Font("ArialBlack", Font.PLAIN, 15));
 		scrlPane = new JScrollPane(recordsTable);
-		scrlPane.setPreferredSize(new Dimension(200, 300));
+		
+		resizeTable();
+		
 		scrlPane.setOpaque(false);
-		scrlPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrlPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		scrlPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrlPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		pnlList.add(scrlPane, BorderLayout.CENTER);
 		
@@ -129,20 +132,30 @@ public class RecordsFrame extends JFrame {
 		cbxDifficulty.setSelectedItem(difficulty);
 	}
 
+	private void resizeTable() {
+		int rowCount = recordsTable.getRowCount();
+		int rowHeight = recordsTable.getRowHeight() + recordsTable.getRowMargin(); 
+		int headerHeight = recordsTable.getTableHeader().getPreferredSize().height + 2; 
+		int tableHeight = rowCount * rowHeight + headerHeight;
+		int tableWidth = 200;
+		Dimension tableSize = new Dimension(tableWidth, tableHeight);
+		scrlPane.setPreferredSize(tableSize);
+		scrlPane.setMinimumSize(scrlPane.getPreferredSize());
+	}
+
 	private void setList(GameDifficulty difficulty) {
 		tableModel.setData(difficulty);
 		if(tableModel.getRowCount() == 0) {
 			pnlList.remove(scrlPane);
 			pnlList.add(lblNoRecords, BorderLayout.CENTER);
-//			scrlPane.setViewportView(lblNoRecords);
 		} else {
-//			scrlPane.setViewportView(recordsTable);
 			pnlList.remove(lblNoRecords);
 			pnlList.add(scrlPane);
 		}
 		
+		resizeTable();
 		pack();
-		repaint();
+//		repaint();
 	}
 	
 	private class RecordsTableModel implements TableModel {

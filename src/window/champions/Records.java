@@ -38,13 +38,14 @@ public class Records {
 				throw new Exception("File is empty. Created new high score table");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			records.put(GameDifficulty.Easy, new ArrayList<Record>());
 			records.put(GameDifficulty.Medium, new ArrayList<Record>());
 			records.put(GameDifficulty.Hard, new ArrayList<Record>());
 		} finally {
 			try {
-				in.close();
+				if(in != null) {
+					in.close();
+				}
 			} catch (Exception e) {
 				System.err.println("Stream have not been closed!");
 			}
@@ -53,7 +54,7 @@ public class Records {
 	
 	public void clearTable(GameDifficulty table) {
 		records.put(table, new ArrayList<Record>());
-		write(table);
+		write();
 	}
 	
 	public void addRecord(GameDifficulty table, String name, int time) {
@@ -70,10 +71,10 @@ public class Records {
 			list.remove(10);
 		}
 		
-		write(table);
+		write();
 	}
 	
-	public void write(GameDifficulty table) {
+	private void write() {
 		ObjectOutputStream out = null;
 		try {
 			recordsFile.delete();
