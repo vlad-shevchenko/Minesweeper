@@ -10,6 +10,14 @@ import javax.swing.JButton;
 
 import main.Const;
 
+/**
+ * <p>
+ * Represents one cell of the field. {@link Field} displays cellContent -
+ * JButton that change it properties according to {@link CellState}.
+ * </p>
+ * 
+ * @author Vlad
+ */
 public class Cell {
 
 	private boolean bomb;
@@ -18,6 +26,16 @@ public class Cell {
 	private JButton cellContent;
 	private MouseListener listener;
 	
+	/**
+	 * <p>
+	 * Initiate button's properties and registers listener.
+	 * </p>
+	 * 
+	 * @param listener - MouseListener for listening of clicks
+	 * @param state - default state of cell
+	 * 
+	 * @author Vlad
+	 */
 	public Cell(MouseListener listener, CellState state) {
 		this.listener = listener;
 		
@@ -31,6 +49,15 @@ public class Cell {
 		setState(state);
 	}
 	
+	/**
+	 * <p>
+	 * Updates state of button.
+	 * </p>
+	 * 
+	 * @param state - new {@link CellState state}
+	 * 
+	 * @author Vlad
+	 */
 	public void setState(CellState state) {
 		this.state = state;
 		
@@ -77,26 +104,78 @@ public class Cell {
 		}
 	}
 	
+	/**
+	 * <p>
+	 * Returns current cell state.
+	 * </p>
+	 * 
+	 * @return current cell state
+	 * 
+	 * @author Vlad
+	 */
 	public CellState getState() {
 		return state;
 	}
 	
+	/**
+	 * <p>
+	 * Increases counter of bombs around this cell.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	public void incBombsCount() {
 		bombsAround++;
 	}
 	
+	/**
+	 * <p>
+	 * Returns bombs counter value.
+	 * </p>
+	 * 
+	 * @return bombs counter value
+	 * 
+	 * @author Vlad
+	 */
 	public int getBombsCount() {
 		return bombsAround;
 	}
 	
+	/**
+	 * <p>
+	 * Set boolean field that determines is this cell contains the bomb.
+	 * </p>
+	 * 
+	 * @param bomb <b>true</b> to set this cell a bomb, <b>false</b> otherwise.
+	 * 
+	 * @author Vlad
+	 */
 	public void setBomb(boolean bomb) {
 		this.bomb = bomb;
 	}
 	
+	/**
+	 * <p>
+	 * Check is this cell contains the bomb.
+	 * </p>
+	 * 
+	 * @return <b>true</b> if this cell contains the bomb, <b>false</b> otherwise.
+	 * 
+	 * @author Vlad
+	 */
 	public boolean isBomb() {
 		return bomb;
 	}
 	
+	/**
+	 * <p>
+	 * Returns button.
+	 * </p>
+	 * 
+	 * @return button
+	 * 
+	 * @author Vlad
+	 */
 	public JButton getContent() {
 		return cellContent;
 	}
