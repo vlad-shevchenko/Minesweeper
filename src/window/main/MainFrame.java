@@ -47,6 +47,9 @@ import events.GameListener;
  */
 public class MainFrame extends JFrame implements GameListener, BombsCountListener {
 
+	private static final Font LabelFont = new Font("Asrock7Segment", Font.BOLD, 16);
+	private static final Color LabelForeground = new Color(165, 42, 42);
+	public static final Color LabelBackground = new Color(0, 0, 139);
 	private final JLabel lblTime = new JLabel();
 	private final JLabel lblBombs = new JLabel();
 	private JButton btnNewGame;
@@ -189,8 +192,8 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	
 	private String numberConvert(int number) {
 		StringBuilder num = new StringBuilder(String.valueOf(number));
-		if(num.length() < 3) {
-			num.insert(0, fillChar('0', 3 - num.length()));
+		if(num.length() < Const.MinDigitsAtLabel) {
+			num.insert(0, fillChar('0', Const.MinDigitsAtLabel - num.length()));
 		}
 		
 		return num.toString();
@@ -222,9 +225,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 
 		lblTime.setText(numberConvert(0));
 		lblTime.setOpaque(true);
-		lblTime.setBackground(new Color(0, 0, 139));
-		lblTime.setForeground(new Color(165, 42, 42));
-		lblTime.setFont(new Font("Asrock7Segment", Font.BOLD, 16));
+		lblTime.setBackground(LabelBackground);
+		lblTime.setForeground(LabelForeground);
+		lblTime.setFont(LabelFont);
 		pnlHeader.add(lblTime);
 
 		Component horizontalGlue = Box.createHorizontalGlue();
@@ -244,9 +247,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 
 		lblBombs.setText(numberConvert(Const.EasyBombsCount));
 		lblBombs.setOpaque(true);
-		lblBombs.setBackground(new Color(0, 0, 139));
-		lblBombs.setForeground(new Color(165, 42, 42));
-		lblBombs.setFont(new Font("Asrock7Segment", Font.BOLD, 16));
+		lblBombs.setBackground(LabelBackground);
+		lblBombs.setForeground(LabelForeground);
+		lblBombs.setFont(LabelFont);
 		pnlHeader.add(lblBombs);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
@@ -273,9 +276,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			JMenuItem mntmEasy = new JMenuItem("Easy");
 			mntmEasy.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-				changeSettings(Const.EasyFieldWidth, Const.EasyFieldHeight,
-						Const.EasyBombsCount);
-				difficulty = GameDifficulty.Easy;
+					changeSettings(Const.EasyFieldWidth, Const.EasyFieldHeight,
+							Const.EasyBombsCount);
+					difficulty = GameDifficulty.Easy;
 				}
 			});
 			mnGame.add(mntmEasy);
@@ -283,9 +286,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			JMenuItem mntmMedium = new JMenuItem("Medium");
 			mntmMedium.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-				changeSettings(Const.MediumFieldWidth, Const.MediumFieldHeight,
-						Const.MediumBombsCount);
-				difficulty = GameDifficulty.Medium;
+					changeSettings(Const.MediumFieldWidth, Const.MediumFieldHeight,
+							Const.MediumBombsCount);
+					difficulty = GameDifficulty.Medium;
 				}
 			});
 			mnGame.add(mntmMedium);
@@ -293,9 +296,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			JMenuItem mntmHard = new JMenuItem("Hard");
 			mntmHard.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-				changeSettings(Const.HardFieldWidth, Const.HardFieldHeight,
-						Const.HardBombsCount);
-				difficulty = GameDifficulty.Hard;
+					changeSettings(Const.HardFieldWidth, Const.HardFieldHeight,
+							Const.HardBombsCount);
+					difficulty = GameDifficulty.Hard;
 				}
 			});
 			mnGame.add(mntmHard);

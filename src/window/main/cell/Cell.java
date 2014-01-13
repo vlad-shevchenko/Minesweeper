@@ -2,7 +2,6 @@ package window.main.cell;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.MouseListener;
 
@@ -13,8 +12,6 @@ import main.Const;
 
 public class Cell {
 
-	private static final Font DefaultCellFont = new Font("ArialBlack", Font.PLAIN, 12);
-	private static final Font UnknownCellFont = new Font("ArialBlack", Font.BOLD, 15);
 	private boolean bomb;
 	private int bombsAround;
 	private CellState state;
@@ -43,14 +40,14 @@ public class Cell {
 			cellContent.setText("");
 			break;
 		case Opened:
-			cellContent.setFont(DefaultCellFont);
+			cellContent.setFont(Const.DefaultCellFont);
 			cellContent.setEnabled(false);
 			cellContent.setText(String.valueOf((bombsAround > 0) ? bombsAround : ""));
-			if(bombsAround >= 3 && bombsAround <= 5) {
+			if(bombsAround >= 3 && bombsAround <= 4) {
 				cellContent.setBackground(Color.ORANGE);
-			} else if(bombsAround > 5 && bombsAround <= 7) {
+			} else if(bombsAround > 4 && bombsAround <= 6) {
 				cellContent.setBackground(Color.RED);
-			} else if(bombsAround > 7) {
+			} else if(bombsAround > 6) {
 				cellContent.setBackground(Color.BLACK);
 			}
 			break;
@@ -70,7 +67,7 @@ public class Cell {
 			cellContent.setIcon(null);
 			cellContent.setText("?");
 			cellContent.setEnabled(true);
-			cellContent.setFont(UnknownCellFont);
+			cellContent.setFont(Const.UnknownCellFont);
 			break;
 		case MaybeBomb:
 			cellContent.setIcon(new ImageIcon(Const.MaybeBomb));

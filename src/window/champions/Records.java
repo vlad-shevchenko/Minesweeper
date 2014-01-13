@@ -121,15 +121,15 @@ public class Records {
 	public void addRecord(GameDifficulty difficulty, String name, int time) {
 		ArrayList<Record> list = records.get(difficulty);
 		
-		for(int i = 0; i < list.size() + 1 && i < 10; ++i) {
+		for(int i = 0; i < list.size() + 1 && i < Const.MaxRecordsNumber; ++i) {
 			if(i >= list.size() || time < ((Record) list.get(i)).getTime()) {
 				list.add(i, new Record(name, time));
 				break;
 			}
 		}
 		
-		if(list.size() > 10) {
-			list.remove(10);
+		if(list.size() > Const.MaxRecordsNumber) {
+			list.remove(Const.MaxRecordsNumber);
 		}
 		
 		write();
@@ -191,10 +191,10 @@ public class Records {
 	public boolean canAdd(GameDifficulty difficulty, int time) {
 		ArrayList<Record> list = records.get(difficulty);
 		
-		if(list.size() < 10) {
+		if(list.size() < Const.MaxRecordsNumber) {
 			return true;
 		}
-		if( ((Record) list.get(9)).getTime() > time) {
+		if( ((Record) list.get(Const.MaxRecordsNumber - 1)).getTime() > time) {
 			return true;
 		}
 		

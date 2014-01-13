@@ -298,55 +298,64 @@ public class Field extends JPanel {
 
 		@Override
 		public void mousePressed(MouseEvent ev) {
-			if (ended)
+			if (ended) {
 				return;
+			}
 
 			JButton source = (JButton) ev.getSource();
 			Point cords = findButtonCords(source);
 			Cell sourceCell = cells[cords.x][cords.y];
 
 			if (ev.getButton() == MouseEvent.BUTTON3) {
-				switch (sourceCell.getState()) {
-				case Closed:
-					sourceCell.setState(CellState.MaybeBomb);
-					bombsListener.updateBombsCount(--uncheckedBombsCount);
-					break;
-				case MaybeBomb:
-					sourceCell.setState(CellState.Unknown);
-					bombsListener.updateBombsCount(++uncheckedBombsCount);
-					break;
-				case Unknown:
-					sourceCell.setState(CellState.Closed);
-					break;
-				default:
-					// Not need because only Closed, MaybeBomb or Unknown cell
-					// may be clicked
-					break;
-				}
+				rightClick(sourceCell);
 			} else if (ev.getButton() == MouseEvent.BUTTON1) {
-				if (sourceCell != null) {
-					if (!started) {
-						started = true;
-						gameListener.startGame();
-					}
-					if (sourceCell.isBomb()) {
-						bombActivated();
-						sourceCell.setState(CellState.Bomb_active);
-						ended = true;
-						gameListener.endOfGame(false);
-					} else if (sourceCell.getState() != CellState.Opened) {
-						sourceCell.setState(CellState.Opened);
-						closedCells--;
-
-						if (sourceCell.getBombsCount() == 0) {
-							openAround(cords.x, cords.y);
-						}
-
-						checkGameEnd();
-					}
-				}
+				leftClick(cords, sourceCell);
 			}
 			return;
+		}
+
+		private void leftClick(Point cords, Cell sourceCell) {
+			if (sourceCell != null) {
+				if (!started) {
+					started = true;
+					gameListener.startGame();
+				}
+				if (sourceCell.isBomb()) {
+					bombActivated();
+					sourceCell.setState(CellState.Bomb_active);
+					ended = true;
+					gameListener.endOfGame(false);
+				} else if (sourceCell.getState() != CellState.Opened) {
+					sourceCell.setState(CellState.Opened);
+					closedCells--;
+
+					if (sourceCell.getBombsCount() == 0) {
+						openAround(cords.x, cords.y);
+					}
+
+					checkGameEnd();
+				}
+			}
+		}
+
+		private void rightClick(Cell sourceCell) {
+			switch (sourceCell.getState()) {
+			case Closed:
+				sourceCell.setState(CellState.MaybeBomb);
+				bombsListener.updateBombsCount(--uncheckedBombsCount);
+				break;
+			case MaybeBomb:
+				sourceCell.setState(CellState.Unknown);
+				bombsListener.updateBombsCount(++uncheckedBombsCount);
+				break;
+			case Unknown:
+				sourceCell.setState(CellState.Closed);
+				break;
+			default:
+				// Not need because only Closed, MaybeBomb or Unknown cell
+				// may be clicked
+				break;
+			}
 		}
 
 	}
