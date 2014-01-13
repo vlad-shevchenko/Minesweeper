@@ -27,14 +27,23 @@ import javax.swing.border.LineBorder;
 import main.Const;
 import window.champions.Records;
 import window.champions.RecordsFrame;
+import window.main.cell.CellState;
 import window.settings.SettingsFrame;
 import events.BombsCountListener;
 import events.GameListener;
 
 /**
- * Main window of program. Contains field [...]
+ * <p>
+ * Main window of program. Contains labels for game time and current bombs
+ * count, button to restart game and {@link Field} object. Also contains menu.
+ * </p>
  * 
- * @author Влад
+ * <p>
+ * Implements {@link GameListener} and {@link BombsCountListener} to take
+ * messages from {@link Field}. Contains timer to track time. 
+ * </p>
+ * 
+ * @author Vlad
  */
 public class MainFrame extends JFrame implements GameListener, BombsCountListener {
 
@@ -57,10 +66,99 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	
 	private Records records;
 	
+	/**
+	 * <p>
+	 * Initiates frame, menu, fields. Creates {@link Field} object with default
+	 * difficulty level is {@link GameDifficulty#Easy}.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	public MainFrame() {
 		initFrameContent();
 		initMenuBar();
+		initActions();
 		
+		records = new Records();
+		difficulty = GameDifficulty.Easy;
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocation(100, 100);
+		setResizable(false);
+		pack();
+		setVisible(true);
+	}
+	
+	/**
+	 * <p>
+	 * Restart game with a new parameters. If parameters are equals to ones of
+	 * any difficulty level set this level and set Special level otherwise.
+	 * </p>
+	 * 
+	 * @param width
+	 *            - new field width
+	 * @param height
+	 *            - new field height
+	 * @param bombs
+	 *            - new amount of bombs
+	 * 
+	 * @author Vlad
+	 */
+	public void changeSettings(int width, int height, int bombs) {
+		fieldWidth = width;
+		fieldHeight = height;
+		this.bombs = bombs;
+		
+		if (width == Const.EasyFieldWidth 
+				&& height == Const.EasyFieldHeight
+				&& bombs == Const.EasyBombsCount) {
+			difficulty = GameDifficulty.Easy;
+		} else if (width == Const.MediumFieldWidth
+				&& height == Const.MediumFieldHeight
+				&& bombs == Const.MediumBombsCount) {
+			difficulty = GameDifficulty.Medium;
+		} else if (width == Const.HardFieldWidth
+				&& height == Const.HardFieldHeight
+				&& bombs == Const.HardBombsCount) {
+			difficulty = GameDifficulty.Hard;
+		} else {
+			difficulty = GameDifficulty.Special;
+		}
+		
+		restart();
+	}
+
+	@Override
+	public void endOfGame(boolean win) {
+		timer.stop();
+		if(win) {
+			if(difficulty != GameDifficulty.Special) {
+				String name = null;
+				if(records.canAdd(difficulty, secondsOfGame)) {
+					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
+					if(!name.isEmpty()) {
+						records.addRecord(difficulty, name, secondsOfGame);
+						invokeRecordsFrame(difficulty);
+					}
+				}
+			}
+		} else {
+			btnNewGame.setIcon(new ImageIcon(Const.NegativeSmileIcon));
+		}
+	}
+
+	@Override
+	public void startGame() {
+		secondsOfGame = 0;
+		timer.start();
+	}
+
+	@Override
+	public void updateBombsCount(int newCount) {
+		lblBombs.setText(numberConvert(newCount));
+	}
+
+	private void initActions() {
 		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
@@ -73,15 +171,6 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 				restart();
 			}
 		});
-		
-		records = new Records();
-		difficulty = GameDifficulty.Easy;
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(100, 100);
-		setResizable(false);
-		pack();
-		setVisible(true);
 	}
 	
 	private void restart() {
@@ -245,57 +334,5 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	private void invokeSettingsFrame() {
 		SettingsFrame settings = new SettingsFrame(this, fieldWidth, fieldHeight, bombs);
 		settings.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
-	}
-	
-	public void changeSettings(int width, int height, int bombs) {
-		fieldWidth = width;
-		fieldHeight = height;
-		this.bombs = bombs;
-		
-		if (width == Const.EasyFieldWidth 
-				&& height == Const.EasyFieldHeight
-				&& bombs == Const.EasyBombsCount) {
-			difficulty = GameDifficulty.Easy;
-		} else if (width == Const.MediumFieldWidth
-				&& height == Const.MediumFieldHeight
-				&& bombs == Const.MediumBombsCount) {
-			difficulty = GameDifficulty.Medium;
-		} else if (width == Const.HardFieldWidth
-				&& height == Const.HardFieldHeight
-				&& bombs == Const.HardBombsCount) {
-			difficulty = GameDifficulty.Hard;
-		}
-		
-		restart();
-	}
-
-	@Override
-	public void endOfGame(boolean win) {
-		timer.stop();
-		if(win) {
-			if(difficulty != GameDifficulty.Special) {
-				String name = null;
-				if(records.canAdd(difficulty, secondsOfGame)) {
-					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
-					if(!name.isEmpty()) {
-						records.addRecord(difficulty, name, secondsOfGame);
-						invokeRecordsFrame(difficulty);
-					}
-				}
-			}
-		} else {
-			btnNewGame.setIcon(new ImageIcon(Const.NegativeSmileIcon));
-		}
-	}
-
-	@Override
-	public void startGame() {
-		secondsOfGame = 0;
-		timer.start();
-	}
-
-	@Override
-	public void updateBombsCount(int newCount) {
-		lblBombs.setText(numberConvert(newCount));
 	}
 }
