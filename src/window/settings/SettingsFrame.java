@@ -16,6 +16,9 @@ import javax.swing.JTextField;
 
 import main.Const;
 import window.main.MainFrame;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import javax.swing.border.EmptyBorder;
 
 /**
  * <p>
@@ -71,11 +74,15 @@ public class SettingsFrame extends JFrame {
 	}
 
 	private void initFrame(int width, int height, int bombs) {
-		getContentPane().setLayout(
-				new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		JPanel pnlMain = new JPanel();
+		pnlMain.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(pnlMain);
+		pnlMain.setLayout(new BoxLayout(pnlMain, BoxLayout.Y_AXIS));
 
 		JPanel pnlData = new JPanel();
-		getContentPane().add(pnlData);
+		pnlMain.add(pnlData);
 		pnlData.setLayout(new BoxLayout(pnlData, BoxLayout.X_AXIS));
 
 		JPanel pnlLabels = new JPanel();
@@ -133,10 +140,10 @@ public class SettingsFrame extends JFrame {
 		fldBombs.setColumns(5);
 
 		JPanel pnlButton = new JPanel();
-		getContentPane().add(pnlButton);
+		pnlMain.add(pnlButton);
 		pnlButton.setLayout(new BoxLayout(pnlButton, BoxLayout.X_AXIS));
 
-		btnOk = new JButton("New button");
+		btnOk = new JButton("Ok");
 		pnlButton.add(btnOk);
 	}
 
