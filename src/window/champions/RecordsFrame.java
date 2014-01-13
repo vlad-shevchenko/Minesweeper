@@ -23,15 +23,27 @@ import javax.swing.table.TableModel;
 import main.Const;
 import sun.awt.HorizBagLayout;
 import window.main.GameDifficulty;
+import window.main.MainFrame;
 
 import javax.swing.JScrollPane;
 
-public class RecordsFrame extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1630134553055909176L;
+/**
+ * <p>
+ * Window for browsing high score tables. GUI contains JComboBox with 3
+ * difficulty levels ({@link window.main.GameDifficulty}), JTable for displaying
+ * records in chose difficulty and button for dropping this table.
+ * </p>
+ * 
+ * <p>
+ * Take the {@link Records} object from {@link MainFrame} to have access to high
+ * score tables. Also contains inner class {@link RecordsTableModel} - table
+ * model for JTable that updates records in table.
+ * </p>
+ * 
+ * @author Vlad
+ */
+public class RecordsFrame extends JFrame {
 
 	private JComboBox<GameDifficulty> cbxDifficulty;
 	
@@ -47,6 +59,16 @@ public class RecordsFrame extends JFrame {
 	private RecordsTableModel tableModel;
 	private JScrollPane scrlPane;
 
+	/**
+	 * <p>
+	 * Initiate frame, set selected difficulty, initiates fields.
+	 * </p>
+	 * 
+	 * @param records - Records object that contains high score tables 
+	 * @param defaultDifficulty - difficulty which must be selected in combobox by default
+	 * 
+	 * @author Vlad
+	 */
 	public RecordsFrame(Records records, GameDifficulty defaultDifficulty) {
 		this.records = records;
 		difficulty = defaultDifficulty;
@@ -63,6 +85,14 @@ public class RecordsFrame extends JFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * <p>
+	 * Initiates actions for UI components - combobox item changing and buttons
+	 * for clearing and exit.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void initActions() {
 		cbxDifficulty.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent ev) {
@@ -89,6 +119,13 @@ public class RecordsFrame extends JFrame {
 		});
 	}
 	
+	/**
+	 * <p>
+	 * Initiates UI components - layouts, buttons, tables, etc.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void initFrame() {
 		JPanel pnlChoose = new JPanel();
 		getContentPane().add(pnlChoose, BorderLayout.NORTH);
@@ -133,6 +170,13 @@ public class RecordsFrame extends JFrame {
 		cbxDifficulty.setSelectedItem(difficulty);
 	}
 
+	/**
+	 * <p>
+	 * Reckons and applies size of records table.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void resizeTable() {
 		int rowCount = recordsTable.getRowCount();
 		int rowHeight = recordsTable.getRowHeight() + recordsTable.getRowMargin(); 
@@ -144,6 +188,15 @@ public class RecordsFrame extends JFrame {
 		scrlPane.setMinimumSize(scrlPane.getPreferredSize());
 	}
 
+	/**
+	 * <p>
+	 * Update records table to display data of new difficulty level.
+	 * </p>
+	 * 
+	 * @param difficulty - new difficulty for displaying
+	 * 
+	 * @author Vlad
+	 */
 	private void setList(GameDifficulty difficulty) {
 		tableModel.setData(difficulty);
 		if(tableModel.getRowCount() == 0) {
@@ -158,16 +211,43 @@ public class RecordsFrame extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * <p>
+	 * Table model for high score table.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private class RecordsTableModel implements TableModel {
 
 		private Object[][] data;
 		private ArrayList<TableModelListener> listeners;
 		
+		/**
+		 * <p>
+		 * Initiates new {@link RecordsTableModel} with difficulty level to
+		 * display fit data.
+		 * </p>
+		 * 
+		 * @param difficulty
+		 *            - specified data that should be displayed
+		 * 
+		 * @author Vlad
+		 */
 		public RecordsTableModel(GameDifficulty difficulty) {
 			data = records.getList(difficulty);
 			listeners = new ArrayList<TableModelListener>(0);
 		}
 		
+		/**
+		 * <p>
+		 * Orders table model to update its data with new records list.
+		 * </p>
+		 * 
+		 * @param difficulty - - specified data that should be displayed
+		 * 
+		 * @author Vlad
+		 */
 		public void setData(GameDifficulty difficulty) {
 			data = records.getList(difficulty);
 		}

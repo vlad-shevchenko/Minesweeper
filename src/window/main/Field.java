@@ -19,6 +19,13 @@ import window.main.cell.CellState;
 import events.BombsCountListener;
 import events.GameListener;
 
+/**
+ * <p>
+ * 
+ * </p>
+ * 
+ * @author Vlad
+ */
 public class Field extends JPanel {
 
 	private Cell[][] cells;

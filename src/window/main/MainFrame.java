@@ -275,7 +275,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		if(win) {
 			if(difficulty != GameDifficulty.Special) {
 				String name = null;
-				if(records.canWrite(difficulty, secondsOfGame)) {
+				if(records.canAdd(difficulty, secondsOfGame)) {
 					name = JOptionPane.showInputDialog(this, "Type your name to carry it in the high score");
 					if(!name.isEmpty()) {
 						records.addRecord(difficulty, name, secondsOfGame);
