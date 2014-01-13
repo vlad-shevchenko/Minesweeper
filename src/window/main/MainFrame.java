@@ -83,9 +83,13 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		difficulty = GameDifficulty.Easy;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(100, 100);
 		setResizable(false);
 		pack();
+		
+		int windowX = Const.MiddleOfTheScreenX - getSize().width / 2;
+		int windowY = Const.MiddleOfTheScreenY - getSize().height / 2;
+		setLocation(windowX, windowY);
+		
 		setVisible(true);
 	}
 	

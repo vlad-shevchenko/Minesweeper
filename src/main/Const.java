@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -87,6 +88,9 @@ public abstract class Const {
 	public static final String[] TableColumnNames = {
 		"Player name", "Time"
 	};
+	
+	public static final int MiddleOfTheScreenX = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width / 2;
+	public static final int MiddleOfTheScreenY = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height / 2;
 
 	
 	

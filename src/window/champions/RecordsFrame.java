@@ -80,7 +80,8 @@ public class RecordsFrame extends JFrame {
 		initActions();
 		
 		pack();
-		setLocation(50, 50);
+		moveToCenter();
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
@@ -172,7 +173,7 @@ public class RecordsFrame extends JFrame {
 
 	/**
 	 * <p>
-	 * Reckons and applies size of records table.
+	 * Reckons and applies size of records table. Also move frame to the center of screen.
 	 * </p>
 	 * 
 	 * @author Vlad
@@ -186,6 +187,14 @@ public class RecordsFrame extends JFrame {
 		Dimension tableSize = new Dimension(tableWidth, tableHeight);
 		scrlPane.setPreferredSize(tableSize);
 		scrlPane.setMinimumSize(scrlPane.getPreferredSize());
+
+		moveToCenter();
+	}
+
+	private void moveToCenter() {
+		int windowX = Const.MiddleOfTheScreenX - getSize().width / 2;
+		int windowY = Const.MiddleOfTheScreenY - getSize().height / 2;
+		setLocation(windowX, windowY);
 	}
 
 	/**

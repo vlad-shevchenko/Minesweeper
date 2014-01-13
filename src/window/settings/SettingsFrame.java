@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import main.Const;
 import window.main.MainFrame;
 
 /**
@@ -58,9 +59,13 @@ public class SettingsFrame extends JFrame {
 
 		initFrame(width, height, bombs);
 		initActions();
-
-		setLocation(150, 150);
+		
 		pack();
+		
+		int windowX = Const.MiddleOfTheScreenX - getSize().width / 2;
+		int windowY = Const.MiddleOfTheScreenY - getSize().height / 2;
+		setLocation(windowX, windowY);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
