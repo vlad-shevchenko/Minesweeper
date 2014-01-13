@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
@@ -21,11 +22,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import main.Const;
-import sun.awt.HorizBagLayout;
+import window.champions.Records.Record;
 import window.main.GameDifficulty;
 import window.main.MainFrame;
-
-import javax.swing.JScrollPane;
 
 
 /**
@@ -244,7 +243,7 @@ public class RecordsFrame extends JFrame {
 		 * @author Vlad
 		 */
 		public RecordsTableModel(GameDifficulty difficulty) {
-			data = records.getList(difficulty);
+			setData(difficulty);
 			listeners = new ArrayList<TableModelListener>(0);
 		}
 		
@@ -258,7 +257,16 @@ public class RecordsFrame extends JFrame {
 		 * @author Vlad
 		 */
 		public void setData(GameDifficulty difficulty) {
-			data = records.getList(difficulty);
+			listToData(records.getList(difficulty));
+		}
+		
+		private void listToData(ArrayList<Record> list) {
+			data = new Object[list.size()][2];
+			
+			for(int i = 0; i < list.size(); ++i) {
+				data[i][0] = list.get(i).getName();
+				data[i][1] = list.get(i).getTime();
+			}
 		}
 		
 		@Override

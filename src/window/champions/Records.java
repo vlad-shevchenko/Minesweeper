@@ -162,16 +162,8 @@ public class Records {
 	 *            - game difficulty specifies table to get
 	 * @return ArrayList of Record objects, than contains players name and times
 	 */
-	public Object[][] getList(GameDifficulty difficulty) {
-		ArrayList<Record> list = records.get(difficulty);
-		Object[][] result = new Object[list.size()][2];
-		
-		for(int i = 0; i < list.size(); ++i) {
-			result[i][0] = list.get(i).name;
-			result[i][1] = list.get(i).time;
-		}
-		
-		return result;
+	public ArrayList<Record> getList(GameDifficulty difficulty) {
+		return records.get( (GameDifficulty)difficulty );
 	}
 	
 	/**
