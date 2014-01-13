@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -129,6 +130,27 @@ public abstract class Const {
 	 */
 	public static final int MinDigitsAtLabel = 3;
 	
+	/**
+	 * <p>Font for timer and bombs counter.</p>
+	 * 
+	 * @author Vlad
+	 */
+	public static final Font LabelFont = new Font("Asrock7Segment", Font.BOLD, 16);
+	
+	/**
+	 * <p>Foreground color for timer and bombs counter.</p>
+	 * 
+	 * @author Vlad
+	 */
+	public static final Color LabelForeground = new Color(165, 42, 42);
+	
+	/**
+	 * <p>Background color for timer and bombs counter.</p>
+	 * 
+	 * @author Vlad
+	 */
+	public static final Color LabelBackground = new Color(0, 0, 139);
+
 
 	
 // Images
@@ -164,6 +186,7 @@ public abstract class Const {
 	public static final Image MaybeBomb = new ImageIcon("res\\flag.png")
 			.getImage().getScaledInstance(CellSize, CellSize,
 					Image.SCALE_DEFAULT);
+
 
 
 }

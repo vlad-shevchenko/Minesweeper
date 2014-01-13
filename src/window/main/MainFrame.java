@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,9 +46,6 @@ import events.GameListener;
  */
 public class MainFrame extends JFrame implements GameListener, BombsCountListener {
 
-	private static final Font LabelFont = new Font("Asrock7Segment", Font.BOLD, 16);
-	private static final Color LabelForeground = new Color(165, 42, 42);
-	public static final Color LabelBackground = new Color(0, 0, 139);
 	private final JLabel lblTime = new JLabel();
 	private final JLabel lblBombs = new JLabel();
 	private JButton btnNewGame;
@@ -225,9 +221,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 
 		lblTime.setText(numberConvert(0));
 		lblTime.setOpaque(true);
-		lblTime.setBackground(LabelBackground);
-		lblTime.setForeground(LabelForeground);
-		lblTime.setFont(LabelFont);
+		lblTime.setBackground(Const.LabelBackground);
+		lblTime.setForeground(Const.LabelForeground);
+		lblTime.setFont(Const.LabelFont);
 		pnlHeader.add(lblTime);
 
 		Component horizontalGlue = Box.createHorizontalGlue();
@@ -247,9 +243,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 
 		lblBombs.setText(numberConvert(Const.EasyBombsCount));
 		lblBombs.setOpaque(true);
-		lblBombs.setBackground(LabelBackground);
-		lblBombs.setForeground(LabelForeground);
-		lblBombs.setFont(LabelFont);
+		lblBombs.setBackground(Const.LabelBackground);
+		lblBombs.setForeground(Const.LabelForeground);
+		lblBombs.setFont(Const.LabelFont);
 		pnlHeader.add(lblBombs);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
