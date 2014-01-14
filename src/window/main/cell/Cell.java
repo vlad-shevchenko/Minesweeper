@@ -8,7 +8,8 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import main.Const;
+import window.main.Field;
+import constant.Const;
 
 /**
  * <p>
@@ -40,8 +41,8 @@ public class Cell {
 		this.listener = listener;
 		
 		cellContent = new JButton(".");
-		cellContent.setPreferredSize(new Dimension(Const.CellSize, Const.CellSize));
-		cellContent.setMaximumSize(new Dimension(Const.CellSize, Const.CellSize));
+		cellContent.setPreferredSize(new Dimension(Const.CellSize(), Const.CellSize()));
+		cellContent.setMaximumSize(new Dimension(Const.CellSize(), Const.CellSize()));
 		cellContent.setMargin(new Insets(0, 0, 0, 0));
 		cellContent.setFocusable(false);
 		cellContent.addMouseListener(listener);
@@ -67,7 +68,7 @@ public class Cell {
 			cellContent.setText("");
 			break;
 		case Opened:
-			cellContent.setFont(Const.DefaultCellFont);
+			cellContent.setFont(Const.DefaultCellFont());
 			cellContent.setEnabled(false);
 			cellContent.setText(String.valueOf((bombsAround > 0) ? bombsAround : ""));
 			if(bombsAround >= 3 && bombsAround <= 4) {
@@ -79,14 +80,14 @@ public class Cell {
 			}
 			break;
 		case Bomb_inactive: 
-			cellContent.setIcon(new ImageIcon(Const.BombInactiveIcon));
-			cellContent.setDisabledIcon(new ImageIcon(Const.BombInactiveIcon));
+			cellContent.setIcon(new ImageIcon(Const.BombInactiveIcon()));
+			cellContent.setDisabledIcon(new ImageIcon(Const.BombInactiveIcon()));
 			cellContent.setText("");
 			cellContent.setEnabled(false);
 			break;
 		case Bomb_active: 
-			cellContent.setIcon(new ImageIcon(Const.BombActiveIcon));
-			cellContent.setDisabledIcon(new ImageIcon(Const.BombActiveIcon));
+			cellContent.setIcon(new ImageIcon(Const.BombActiveIcon()));
+			cellContent.setDisabledIcon(new ImageIcon(Const.BombActiveIcon()));
 			cellContent.setText("");
 			cellContent.setEnabled(false);
 			break;
@@ -94,10 +95,10 @@ public class Cell {
 			cellContent.setIcon(null);
 			cellContent.setText("?");
 			cellContent.setEnabled(true);
-			cellContent.setFont(Const.UnknownCellFont);
+			cellContent.setFont(Const.UnknownCellFont());
 			break;
 		case MaybeBomb:
-			cellContent.setIcon(new ImageIcon(Const.MaybeBomb));
+			cellContent.setIcon(new ImageIcon(Const.MaybeBomb()));
 			cellContent.setText("");
 			cellContent.setEnabled(true);
 			break;

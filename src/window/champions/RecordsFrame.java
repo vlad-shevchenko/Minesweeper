@@ -3,6 +3,7 @@ package window.champions;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -21,10 +22,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import main.Const;
 import window.champions.Records.Record;
 import window.main.GameDifficulty;
 import window.main.MainFrame;
+import constant.Const;
 
 
 /**
@@ -191,8 +192,12 @@ public class RecordsFrame extends JFrame {
 	}
 
 	private void moveToCenter() {
-		int windowX = Const.MiddleOfTheScreenX - getSize().width / 2;
-		int windowY = Const.MiddleOfTheScreenY - getSize().height / 2;
+		int centerX = (int) GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().getCenterX();
+		int centerY = (int) GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().getCenterY();
+		int windowX = centerX - getSize().width / 2;
+		int windowY = centerY - getSize().height / 2;
 		setLocation(windowX, windowY);
 	}
 
@@ -308,7 +313,7 @@ public class RecordsFrame extends JFrame {
 
 		@Override
 		public String getColumnName(int columnIndex) {
-			return Const.TableColumnNames[columnIndex];
+			return Const.TableColumnNames()[columnIndex];
 		}
 
 		@Override

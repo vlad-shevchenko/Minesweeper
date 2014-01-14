@@ -8,12 +8,11 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import main.Const;
 import window.main.GameDifficulty;
+import constant.Const;
 
 /**
  * <p>
@@ -24,7 +23,7 @@ import window.main.GameDifficulty;
  * Tables stored in HashMap, wherein {@link GameDifficulty} object is a key and
  * ArrayList is a value. ArrayList contains list of ten most quickly players in
  * current difficulty level. Method {@link #write()} save HashMap into a file
- * (specified by the constant {@link main.Const#RecordsFile}). Rewrites after
+ * (specified by the constant {@link constant.Const#RecordsFile}). Rewrites after
  * every record adding.
  * </p>
  * 
@@ -48,7 +47,7 @@ public class Records {
 	 * </p>
 	 */
 	public Records() {
-		recordsFile = new File(Const.RecordsFile);
+		recordsFile = new File(Const.RecordsFile());
 		
 		ObjectInputStream in = null;
 		try {
@@ -121,15 +120,15 @@ public class Records {
 	public void addRecord(GameDifficulty difficulty, String name, int time) {
 		ArrayList<Record> list = records.get(difficulty);
 		
-		for(int i = 0; i < list.size() + 1 && i < Const.MaxRecordsNumber; ++i) {
+		for(int i = 0; i < list.size() + 1 && i < Const.MaxRecordsNumber(); ++i) {
 			if(i >= list.size() || time < ((Record) list.get(i)).getTime()) {
 				list.add(i, new Record(name, time));
 				break;
 			}
 		}
 		
-		if(list.size() > Const.MaxRecordsNumber) {
-			list.remove(Const.MaxRecordsNumber);
+		if(list.size() > Const.MaxRecordsNumber()) {
+			list.remove(Const.MaxRecordsNumber());
 		}
 		
 		write();
@@ -183,10 +182,10 @@ public class Records {
 	public boolean canAdd(GameDifficulty difficulty, int time) {
 		ArrayList<Record> list = records.get(difficulty);
 		
-		if(list.size() < Const.MaxRecordsNumber) {
+		if(list.size() < Const.MaxRecordsNumber()) {
 			return true;
 		}
-		if( ((Record) list.get(Const.MaxRecordsNumber - 1)).getTime() > time) {
+		if( ((Record) list.get(Const.MaxRecordsNumber() - 1)).getTime() > time) {
 			return true;
 		}
 		

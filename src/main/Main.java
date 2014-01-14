@@ -1,20 +1,28 @@
 package main;
 
 import window.main.MainFrame;
+import constant.ConstInitializer;
 
 /**
+ * <p>
  * Start point of the program. Just initiates {@link MainFrame} object.
+ * </p>
  * 
- * @author Влад
+ * @author Vlad
  */
 public class Main {
 
 	/**
-	 * Initiates {@link MainFrame} object to start the program work.
+	 * <p>
+	 * Loads constants from *.xml file. Then initiates {@link MainFrame} object
+	 * to start the program work.
+	 * </p>
 	 * 
-	 * @param args - parameters of command line
+	 * @param args
+	 *            - parameters of command line
 	 */
 	public static void main(String[] args) {
+		new ConstInitializer().initialize();
 		new MainFrame();
 	}
 }

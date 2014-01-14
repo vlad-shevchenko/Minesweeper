@@ -1,7 +1,9 @@
 package window.settings;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,12 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import main.Const;
-import window.main.MainFrame;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
 import javax.swing.border.EmptyBorder;
+
+import window.main.MainFrame;
 
 /**
  * <p>
@@ -65,8 +64,12 @@ public class SettingsFrame extends JFrame {
 		
 		pack();
 		
-		int windowX = Const.MiddleOfTheScreenX - getSize().width / 2;
-		int windowY = Const.MiddleOfTheScreenY - getSize().height / 2;
+		int centerX = (int) GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().getCenterX();
+		int centerY = (int) GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().getCenterY();
+		int windowX = centerX - getSize().width / 2;
+		int windowY = centerY - getSize().height / 2;
 		setLocation(windowX, windowY);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

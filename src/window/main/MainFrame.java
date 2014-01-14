@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,11 +24,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.LineBorder;
 
-import main.Const;
 import window.champions.Records;
 import window.champions.RecordsFrame;
-import window.main.cell.CellState;
 import window.settings.SettingsFrame;
+import constant.Const;
 import events.BombsCountListener;
 import events.GameListener;
 
@@ -55,9 +55,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 	private Timer timer;
 	private int secondsOfGame;
 	
-	private int fieldWidth = Const.EasyFieldWidth;
-	private int fieldHeight = Const.EasyFieldHeight;
-	private int bombs = Const.EasyBombsCount;
+	private int fieldWidth = Const.EasyFieldWidth();
+	private int fieldHeight = Const.EasyFieldHeight();
+	private int bombs = Const.EasyBombsCount();
 	
 	private JMenuBar menuBar;
 	
@@ -85,8 +85,12 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		setResizable(false);
 		pack();
 		
-		int windowX = Const.MiddleOfTheScreenX - getSize().width / 2;
-		int windowY = Const.MiddleOfTheScreenY - getSize().height / 2;
+		int centerX = (int) GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().getCenterX();
+		int centerY = (int) GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getMaximumWindowBounds().getCenterY();
+		int windowX = centerX - getSize().width / 2;
+		int windowY = centerY - getSize().height / 2;
 		setLocation(windowX, windowY);
 		
 		setVisible(true);
@@ -112,17 +116,17 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		fieldHeight = height;
 		this.bombs = bombs;
 		
-		if (width == Const.EasyFieldWidth 
-				&& height == Const.EasyFieldHeight
-				&& bombs == Const.EasyBombsCount) {
+		if (width == Const.EasyFieldWidth() 
+				&& height == Const.EasyFieldHeight()
+				&& bombs == Const.EasyBombsCount()) {
 			difficulty = GameDifficulty.Easy;
-		} else if (width == Const.MediumFieldWidth
-				&& height == Const.MediumFieldHeight
-				&& bombs == Const.MediumBombsCount) {
+		} else if (width == Const.MediumFieldWidth()
+				&& height == Const.MediumFieldHeight()
+				&& bombs == Const.MediumBombsCount()) {
 			difficulty = GameDifficulty.Medium;
-		} else if (width == Const.HardFieldWidth
-				&& height == Const.HardFieldHeight
-				&& bombs == Const.HardBombsCount) {
+		} else if (width == Const.HardFieldWidth()
+				&& height == Const.HardFieldHeight()
+				&& bombs == Const.HardBombsCount()) {
 			difficulty = GameDifficulty.Hard;
 		} else {
 			difficulty = GameDifficulty.Special;
@@ -146,7 +150,7 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 				}
 			}
 		} else {
-			btnNewGame.setIcon(new ImageIcon(Const.NegativeSmileIcon));
+			btnNewGame.setIcon(new ImageIcon(Const.NegativeSmileIcon()));
 		}
 	}
 
@@ -181,15 +185,15 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		lblTime.setText(numberConvert(0));
 		lblBombs.setText(numberConvert(bombs));
 		field.restart(fieldWidth, fieldHeight, bombs);
-		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon));
+		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon()));
 		pack();
 		repaint();
 	}
 	
 	private String numberConvert(int number) {
 		StringBuilder num = new StringBuilder(String.valueOf(number));
-		if(num.length() < Const.MinDigitsAtLabel) {
-			num.insert(0, fillChar('0', Const.MinDigitsAtLabel - num.length()));
+		if(num.length() < Const.MinDigitsAtLabel()) {
+			num.insert(0, fillChar('0', Const.MinDigitsAtLabel() - num.length()));
 		}
 		
 		return num.toString();
@@ -221,9 +225,9 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 
 		lblTime.setText(numberConvert(0));
 		lblTime.setOpaque(true);
-		lblTime.setBackground(Const.LabelBackground);
-		lblTime.setForeground(Const.LabelForeground);
-		lblTime.setFont(Const.LabelFont);
+		lblTime.setBackground(Const.LabelBackground());
+		lblTime.setForeground(Const.LabelForeground());
+		lblTime.setFont(Const.LabelFont());
 		pnlHeader.add(lblTime);
 
 		Component horizontalGlue = Box.createHorizontalGlue();
@@ -235,17 +239,17 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		btnNewGame.setBackground(SystemColor.controlHighlight);
 		btnNewGame.setForeground(SystemColor.controlHighlight);
 		btnNewGame.setMaximumSize(new Dimension(32, 32));
-		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon));
+		btnNewGame.setIcon(new ImageIcon(Const.PositiveSmileIcon()));
 		pnlHeader.add(btnNewGame);
 
 		Component horizontalGlue_1 = Box.createHorizontalGlue();
 		pnlHeader.add(horizontalGlue_1);
 
-		lblBombs.setText(numberConvert(Const.EasyBombsCount));
+		lblBombs.setText(numberConvert(Const.EasyBombsCount()));
 		lblBombs.setOpaque(true);
-		lblBombs.setBackground(Const.LabelBackground);
-		lblBombs.setForeground(Const.LabelForeground);
-		lblBombs.setFont(Const.LabelFont);
+		lblBombs.setBackground(Const.LabelBackground());
+		lblBombs.setForeground(Const.LabelForeground());
+		lblBombs.setFont(Const.LabelFont());
 		pnlHeader.add(lblBombs);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(10);
@@ -272,8 +276,8 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			JMenuItem mntmEasy = new JMenuItem("Easy");
 			mntmEasy.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					changeSettings(Const.EasyFieldWidth, Const.EasyFieldHeight,
-							Const.EasyBombsCount);
+					changeSettings(Const.EasyFieldWidth(), Const.EasyFieldHeight(),
+							Const.EasyBombsCount());
 					difficulty = GameDifficulty.Easy;
 				}
 			});
@@ -282,8 +286,8 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			JMenuItem mntmMedium = new JMenuItem("Medium");
 			mntmMedium.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					changeSettings(Const.MediumFieldWidth, Const.MediumFieldHeight,
-							Const.MediumBombsCount);
+					changeSettings(Const.MediumFieldWidth(), Const.MediumFieldHeight(),
+							Const.MediumBombsCount());
 					difficulty = GameDifficulty.Medium;
 				}
 			});
@@ -292,8 +296,8 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			JMenuItem mntmHard = new JMenuItem("Hard");
 			mntmHard.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					changeSettings(Const.HardFieldWidth, Const.HardFieldHeight,
-							Const.HardBombsCount);
+					changeSettings(Const.HardFieldWidth(), Const.HardFieldHeight(),
+							Const.HardBombsCount());
 					difficulty = GameDifficulty.Hard;
 				}
 			});
