@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -110,12 +111,18 @@ public class RecordsFrame extends JFrame {
 
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				records.clearTable(difficulty);
+				int answer = JOptionPane.showConfirmDialog(RecordsFrame.this,
+						"Are you sure you want clear this table?", "Confirm",
+						JOptionPane.YES_NO_OPTION);
 				
-				setList(difficulty);
-				
-				pack();
-				repaint();
+				if(answer == JOptionPane.YES_OPTION) {
+					records.clearTable(difficulty);
+					
+					setList(difficulty);
+					
+					pack();
+					repaint();
+				}
 			}
 		});
 	}
