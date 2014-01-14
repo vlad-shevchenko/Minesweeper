@@ -76,6 +76,17 @@ public class SettingsFrame extends JFrame {
 		setVisible(true);
 	}
 
+	/**
+	 * <p>
+	 * Creates UI.
+	 * </p>
+	 * 
+	 * @param width current field width
+	 * @param height current field height
+	 * @param bombs current bombs count
+	 * 
+	 * @author Vlad
+	 */
 	private void initFrame(int width, int height, int bombs) {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -150,6 +161,13 @@ public class SettingsFrame extends JFrame {
 		pnlButton.add(btnOk);
 	}
 
+	/**
+	 * <p>
+	 * Creates actions for button.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void initActions() {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {

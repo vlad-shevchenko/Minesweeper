@@ -134,6 +134,14 @@ public class Records {
 		write();
 	}
 	
+	/**
+	 * <p>
+	 * Save current version of high score table to file. Invoked every time when
+	 * table changed.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void write() {
 		ObjectOutputStream out = null;
 		try {

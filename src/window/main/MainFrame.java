@@ -180,6 +180,14 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		});
 	}
 	
+	/**
+	 * <p>
+	 * Restarts game. Reinitiate object fields and command {@link Field} object
+	 * to restart with new parameters.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void restart() {
 		timer.stop();
 		lblTime.setText(numberConvert(0));
@@ -190,6 +198,18 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		repaint();
 	}
 	
+	/**
+	 * <p>
+	 * Represents number as a string in of the form "005", "012", "621". Minimal
+	 * number of digits specified by {@link Const#MinDigitsAtLabel()} constant.
+	 * </p>
+	 * 
+	 * @param number
+	 * 
+	 * @return string with number
+	 * 
+	 * @author Vlad
+	 */
 	private String numberConvert(int number) {
 		StringBuilder num = new StringBuilder(String.valueOf(number));
 		if(num.length() < Const.MinDigitsAtLabel()) {
@@ -199,6 +219,17 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		return num.toString();
 	}
 	
+	/**
+	 * <p>
+	 * Fill string with specified char.
+	 * </p>
+	 * 
+	 * @param ch
+	 * @param amount
+	 * @return string with <b>amount</b> of <b>ch</b>
+	 * 
+	 * @author Vlad
+	 */
 	private String fillChar(char ch, int amount) {
 		StringBuilder result = new StringBuilder(amount);
 		for(int i = 0; i < amount; ++i) {
@@ -208,6 +239,13 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		return result.toString();
 	}
 	
+	/**
+	 * <p>
+	 * Creates UI.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void initFrameContent() {
 		field = new Field(fieldWidth, fieldHeight, bombs);
 		field.setGameListener(this);
@@ -256,6 +294,13 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 		pnlHeader.add(horizontalStrut_1);
 	}
 
+	/**
+	 * <p>
+	 * Creates menu bar and initiates it with actions.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void initMenuBar() {
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -333,11 +378,27 @@ public class MainFrame extends JFrame implements GameListener, BombsCountListene
 			mnGame.add(mntmExit);
 	}
 	
+	/**
+	 * <p>
+	 * Invokes RecordsFrame.
+	 * </p>
+	 * 
+	 * @param defaultList difficulty that will be selected by default in records frame.
+	 * 
+	 * @author Vlad
+	 */
 	private void invokeRecordsFrame(GameDifficulty defaultList) {
 		RecordsFrame recordsFrame = new RecordsFrame(records, defaultList);
 		recordsFrame.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);
 	}
 	
+	/**
+	 * <p>
+	 * Invokes SettingsFrame.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void invokeSettingsFrame() {
 		SettingsFrame settings = new SettingsFrame(this, fieldWidth, fieldHeight, bombs);
 		settings.setModalExclusionType(Dialog.ModalExclusionType.NO_EXCLUDE);

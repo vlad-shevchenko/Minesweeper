@@ -5,15 +5,15 @@
 	
 	<Integer name = "EasyFieldWidth" value = "9" />
 	<Integer name = "EasyFieldHeight" value = "9" />
-	<Integer name = "EasyFieldBombs" value = "10" />
+	<Integer name = "EasyBombsCount" value = "10" />
 	
 	<Integer name = "MediumFieldWidth" value = "15" />
 	<Integer name = "MediumFieldHeight" value = "15" />
-	<Integer name = "MediumFieldBombs" value = "25" />
+	<Integer name = "MediumBombsCount" value = "25" />
 	
 	<Integer name = "HardFieldWidth" value = "25" />
 	<Integer name = "HardFieldHeight" value = "25" />
-	<Integer name = "HardFieldBombs" value = "40" />
+	<Integer name = "HardBombsCount" value = "70" />
 	
 	<Integer name = "CellSize" value = "18" />
 	<Integer name = "CellGapSize" value = "0" />

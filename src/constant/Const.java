@@ -39,9 +39,9 @@ public final class Const {
 		
 		put("HardFieldWidth", ConstType.Integer, 25);
 		put("HardFieldHeight", ConstType.Integer, 25);
-		put("HardBombsCount", ConstType.Integer, 40);
+		put("HardBombsCount", ConstType.Integer, 70);
 		
-		put("CellSize", ConstType.Integer, 20);
+		put("CellSize", ConstType.Integer, 18);
 		put("CellGapSize", ConstType.Integer, 0);
 		
 		put("TableColumnNames", ConstType.StringArray, 
@@ -62,6 +62,21 @@ public final class Const {
 		put("MinDigitsAtLabel", ConstType.Integer, 3);
 	}
 	
+	/**
+	 * <p>
+	 * Put constant with specified name, type and value to constant set (only if
+	 * value not equal to <b>null</b>)
+	 * </p>
+	 * 
+	 * @param name
+	 *            of constant
+	 * @param type
+	 *            of constant
+	 * @param value
+	 *            of constant
+	 * 
+	 * @author Vlad
+	 */
 	static void put(String name, ConstType type, Object value) {
 		if(value != null) {
 			consts.put(name, new AbstractMap.SimpleEntry<ConstType, Object>(type, value));

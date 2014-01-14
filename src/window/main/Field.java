@@ -162,6 +162,20 @@ public class Field extends JPanel {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Forms and returns array that contains some part of <b>cells</b> array.
+	 * </p>
+	 * 
+	 * @param x
+	 * @param y
+	 * @param radius
+	 * 
+	 * @return new Cell[][] array with cells[x][y] element and all elements
+	 *         within <b>radius</b>
+	 * 
+	 * @author Vlad
+	 */
 	private Cell[][] getSubArray(int x, int y, int radius) {
 		int maxX = fieldWidth;
 		int maxY = fieldHeight;
@@ -200,6 +214,17 @@ public class Field extends JPanel {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Recursive procedure for opening specified cell and all zero-value cells
+	 * around it.
+	 * </p>
+	 * 
+	 * @param x of cell for open
+	 * @param y of cell for open
+	 * 
+	 * @author Vlad
+	 */
 	private void openAround(int x, int y) {
 		Cell[][] subArray = getSubArray(x, y, 1);
 		for (int i = 0; i < subArray.length; ++i) {
@@ -220,6 +245,17 @@ public class Field extends JPanel {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Returns index of {@link Cell} in array that contains specified JButton.
+	 * </p>
+	 * 
+	 * @param button for search
+	 * 
+	 * @return Point with indexes of cell
+	 * 
+	 * @author Vlad
+	 */
 	private Point findButtonCords(JButton button) {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
@@ -231,12 +267,29 @@ public class Field extends JPanel {
 		return null;
 	}
 
+	/**
+	 * <p>
+	 * Check if player already click all non-bomb cells. If it is true invokes
+	 * the {@link GameListener#endOfGame(boolean)} method of current
+	 * {@link GameListener}.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void checkGameEnd() {
 		if (closedCells == initialBombsCount) {
 			gameListener.endOfGame(true);
 		}
 	}
 
+	/**
+	 * <p>
+	 * Set state of all bombs at the field as {@link CellState#Bomb_inactive}.
+	 * Invoked when player click the bomb cell.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private void bombActivated() {
 		for (int i = 0; i < cells.length; i++) {
 			for (int j = 0; j < cells[0].length; j++) {
@@ -291,6 +344,13 @@ public class Field extends JPanel {
 		this.bombsListener = bombsListener;
 	}
 
+	/**
+	 * <p>
+	 * Handles event of mouse pressing.
+	 * </p>
+	 * 
+	 * @author Vlad
+	 */
 	private class MouseHandler extends MouseAdapter {
 
 		@Override
@@ -311,6 +371,20 @@ public class Field extends JPanel {
 			return;
 		}
 
+		/**
+		 * <p>
+		 * Handles clicking of cell with left mouse button. Change state of cell
+		 * as {@link CellState#Opened} or inform Field about end of game if
+		 * player click bomb.
+		 * </p>
+		 * 
+		 * @param cords
+		 *            of cell clicked
+		 * @param sourceCell
+		 *            - cell that was clicked
+		 * 
+		 * @author Vlad
+		 */
 		private void leftClick(Point cords, Cell sourceCell) {
 			if (sourceCell != null) {
 				if (!started) {
@@ -335,6 +409,18 @@ public class Field extends JPanel {
 			}
 		}
 
+		/**
+		 * <p>
+		 * Handles clicking of cell with right mouse button. Changes cell's
+		 * state to mark it as {@link CellState#Unknown} or
+		 * {@link CellState#MaybeBomb}.
+		 * </p>
+		 * 
+		 * @param sourceCell
+		 *            - cell was clicked
+		 * 
+		 * @author Vlad
+		 */
 		private void rightClick(Cell sourceCell) {
 			switch (sourceCell.getState()) {
 			case Closed:
