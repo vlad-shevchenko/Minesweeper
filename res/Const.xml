@@ -15,7 +15,7 @@
 	<Integer name = "HardFieldHeight" value = "25" />
 	<Integer name = "HardBombsCount" value = "70" />
 	
-	<Integer name = "CellSize" value = "18" />
+	<Integer name = "CellSize" value = "30" />
 	<Integer name = "CellGapSize" value = "0" />
 	
 	<StringArray name = "TableColumnNames">

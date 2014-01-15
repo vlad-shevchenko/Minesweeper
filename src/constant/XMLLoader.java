@@ -3,12 +3,14 @@ package constant;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
-import java.util.Iterator;
-import java.util.List;
 
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 class XMLLoader {
 
@@ -24,15 +26,18 @@ class XMLLoader {
 	 * @author Vlad
 	 */
 	XMLLoader() {
-		SAXBuilder builder = new SAXBuilder();
+		File file = new File(constFilePath);
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = null;
 		Document doc = null;
 		try {
-			doc = (Document) builder.build(new File(constFilePath));
+			builder = factory.newDocumentBuilder();
+			doc = builder.parse(file);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		
-		rootElem = (Element) doc.getRootElement();
+		rootElem = doc.getDocumentElement();
 	}
 	
 	/**
@@ -52,25 +57,27 @@ class XMLLoader {
 	 * @author Vlad
 	 */
 	Object getConst(ConstType type, String name) {
-		List<Element> strings = rootElem.getChildren(type.toString());
-		Iterator<Element> i = strings.iterator();
+		NodeList strings = rootElem.getChildNodes();
 		
-		while(i.hasNext()) {
-			Element item = i.next();
-			if(item.getAttributeValue("name").equals(name)) {
-				switch (type) {
-				case Integer:
-					return getInteger(name, item);
-				case String:
-					return item.getAttributeValue("value");
-				case StringArray:
-					return getStringArray(item);
-				case Font:
-					return getFont(name, item);
-				case Color:
-					return getColor(item);
-				default:
-					return null;
+		for(int i = 0; i < strings.getLength(); ++i) {
+			Node child = strings.item(i);
+			if(child instanceof Element) {
+				Element item = (Element) child;
+				if(item.getAttribute("name").equals(name)) {
+					switch (type) {
+					case Integer:
+						return getInteger(name, item);
+					case String:
+						return item.getAttribute("value");
+					case StringArray:
+						return getStringArray(item);
+					case Font:
+						return getFont(name, item);
+					case Color:
+						return getColor(item);
+					default:
+						return null;
+					}
 				}
 			}
 		}
@@ -90,9 +97,9 @@ class XMLLoader {
 	 * @author Vlad
 	 */
 	private Object getColor(Element item) {
-		String strRed = item.getAttribute("red").getValue();
-		String strGreen = item.getAttribute("green").getValue();
-		String strBlue = item.getAttribute("blue").getValue();
+		String strRed = item.getAttribute("red");
+		String strGreen = item.getAttribute("green");
+		String strBlue = item.getAttribute("blue");
 		
 		Integer intRed = strToInt(strRed);
 		Integer intGreen = strToInt(strGreen);
@@ -117,9 +124,9 @@ class XMLLoader {
 	 * @author Vlad
 	 */
 	private Object getFont(String name, Element item) {
-		String fontName = item.getAttribute("font").getValue();
-		String fontStyle = item.getAttribute("style").getValue();
-		String fontSize = item.getAttribute("size").getValue();
+		String fontName = item.getAttribute("font");
+		String fontStyle = item.getAttribute("style");
+		String fontSize = item.getAttribute("size");
 		
 		Font font = strToFont(fontName, fontStyle, fontSize);
 		if(font == null) {
@@ -144,13 +151,15 @@ class XMLLoader {
 	 * @author Vlad
 	 */
 	private Object getStringArray(Element item) {
-		List<Element> arrayStrings = item.getChildren();
-		String[] array = new String[arrayStrings.size()];
-		Iterator<Element> arrayIter = arrayStrings.iterator();
+		NodeList arrayStrings = item.getChildNodes();
+		String[] array = new String[arrayStrings.getLength()];
 		
-		int index = 0;
-		while(arrayIter.hasNext()) {
-			array[index++] = arrayIter.next().getAttributeValue("value");
+		for(int i = 0; i < arrayStrings.getLength(); ++i) {
+			Node node = arrayStrings.item(i);
+			if(node instanceof Element) {
+				Element child = (Element) node;
+				array[i] = child.getAttribute("value");
+			}
 		}
 		
 		return array;
@@ -168,7 +177,7 @@ class XMLLoader {
 	 * @author Vlad
 	 */
 	private Object getInteger(String name, Element item) {
-		String strVal = item.getAttributeValue("value");
+		String strVal = item.getAttribute("value");
 		Integer intVal = strToInt(strVal);
 		if(intVal == null) {
 			System.err.println("String to Integer convertation has fell. "
