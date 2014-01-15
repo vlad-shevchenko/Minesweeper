@@ -278,6 +278,7 @@ public class Field extends JPanel {
 	 */
 	private void checkGameEnd() {
 		if (closedCells == initialBombsCount) {
+			ended = true;
 			gameListener.endOfGame(true);
 		}
 	}
@@ -391,6 +392,7 @@ public class Field extends JPanel {
 					started = true;
 					gameListener.startGame();
 				}
+				
 				if (sourceCell.isBomb()) {
 					bombActivated();
 					sourceCell.setState(CellState.Bomb_active);
